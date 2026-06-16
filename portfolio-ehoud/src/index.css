@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Polices — charte officielle « Le Bleu Créatif »
+   · Shrikhand  → display / logotype (chargée via Google Fonts, voir index.html)
+   · Work Sans  → corps de texte    (Google Fonts)
+   · Bristone   → titres accent     (auto-hébergée, woff2 extraits de la charte)
+--------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Bristone";
+  src: url("./assets/fonts/bristone-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bristone";
+  src: url("./assets/fonts/bristone-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bristone Display";
+  src: url("./assets/fonts/bristone-display.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ---------------------------------------------------------------------------
+   Tokens « Le Bleu Créatif » — palette 100 % bleue, 4 variantes.
+   Triplets HSL (jamais de hex dans les composants).
+--------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    /* Palette officielle */
+    --navy: 213 62% 24%;   /* #173861 — fonds sombres, titres */
+    --sky: 198 82% 71%;    /* #79CDF2 — blobs, accents doux */
+    --blue: 203 83% 39%;   /* #1178B7 — accent vif, CTA, hover */
+    --pale: 200 71% 96%;   /* #EBF7FD — fonds clairs, surfaces */
+    --white: 0 0% 100%;
+
+    /* Rôles thématiques (5 rôles par section, mécanisme hérité du modèle).
+       Défaut = "marine" : fond navy, surfaces pâles, accent bleu vif. */
+    --theme-bg-primary: var(--navy);
+    --theme-bg-secondary: var(--pale);
+    --theme-text-primary: var(--pale);
+    --theme-text-secondary: var(--navy);
+    --theme-accent: var(--blue);
+
+    --radius: 0.75rem;
+  }
+
+  /* Thème clair — sections aérées (fond pâle, surfaces navy) */
+  .theme-pale {
+    --theme-bg-primary: var(--pale);
+    --theme-bg-secondary: var(--navy);
+    --theme-text-primary: var(--navy);
+    --theme-text-secondary: var(--pale);
+    --theme-accent: var(--blue);
+  }
+
+  /* Thème ciel — sections douces (fond sky, texte navy) */
+  .theme-sky {
+    --theme-bg-primary: var(--sky);
+    --theme-bg-secondary: var(--navy);
+    --theme-text-primary: var(--navy);
+    --theme-text-secondary: var(--white);
+    --theme-accent: var(--navy);
+  }
+
+  /* Thème bleu vif — moments forts (fond blue, accent sky) */
+  .theme-blue {
+    --theme-bg-primary: var(--blue);
+    --theme-bg-secondary: var(--pale);
+    --theme-text-primary: var(--white);
+    --theme-text-secondary: var(--blue);
+    --theme-accent: var(--sky);
+  }
+
+  * {
+    border-color: hsl(var(--theme-text-primary) / 0.12);
+  }
+
+  body {
+    background-color: hsl(var(--navy));
+    color: hsl(var(--pale));
+    font-family: theme("fontFamily.sans");
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Scrollbars masquées (le scroll fonctionne, mais rien de visible) */
+  html {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  html::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+}
