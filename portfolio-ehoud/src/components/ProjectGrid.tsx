@@ -1,7 +1,7 @@
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { projects } from "@/data/projects";
 
-// Grille portfolio — calquée sur la galerie du modèle :
+// Grille portfolio, calquée sur la galerie du modèle :
 // 1 colonne (mobile) -> 3 colonnes (desktop), grands écarts verticaux, toutes
 // les images au même ratio 0.8 (portrait), parallax au scroll + zoom au survol.
 export function ProjectGrid() {

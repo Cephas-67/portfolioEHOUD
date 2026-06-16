@@ -8,7 +8,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // CTA principal — accent de la section
+        // CTA principal, accent de la section
         default: "bg-theme-accent text-theme-bg-primary hover:opacity-90",
         // Bouton sur surface claire (chip de nav)
         secondary: "bg-theme-bg-secondary text-theme-text-secondary hover:opacity-90",

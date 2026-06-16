@@ -301,6 +301,9 @@ Dark mode   : géré par next-themes (classe .dark)
 7. TOKENS HSL UNIQUEMENT    Aucune couleur hardcodée, jamais
 8. UN SEUL LABEL HOVER      Pas de title HTML natif + label custom simultanés
 9. CHIPS SOLIDES > PILLS    rounded-md + zero shadow pour les labels de hover
+10. JAMAIS DE TIRET CADRATIN  Aucun « — » (em dash) nulle part : ni texte
+    affiché, ni copie, ni code/commentaires. Utiliser « · » (titre/détail),
+    une virgule, ou deux-points selon le sens.
 ```
 
 ---

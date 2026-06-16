@@ -5,7 +5,7 @@ export default function Entrepreneuriat() {
   const { t } = useLanguage();
   return (
     <Section theme="blue">
-      <h1 className="font-poster uppercase text-5xl md:text-6xl">{t.nav.ventures}</h1>
+      <h1 className="font-script uppercase text-5xl md:text-6xl">{t.nav.ventures}</h1>
     </Section>
   );
 }

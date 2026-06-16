@@ -14,11 +14,11 @@ export type Slide = {
 };
 
 export const slides: Slide[] = [
-  { src: soced, title: "SOCED — Notebook", category: "Print" },
-  { src: vobodo, title: "Vobodo — Droits des Femmes", category: "Campagnes" },
-  { src: tshirt, title: "Jewelry Class — Merch", category: "Print" },
+  { src: soced, title: "SOCED · Notebook", category: "Print" },
+  { src: vobodo, title: "Vobodo · Droits des Femmes", category: "Campagnes" },
+  { src: tshirt, title: "Jewelry Class · Merch", category: "Print" },
   { src: boom, title: "Boom Events", category: "Identité" },
-  { src: cap, title: "COJAS — Casquette 28 Septembre", category: "Print" },
+  { src: cap, title: "COJAS · Casquette 28 Septembre", category: "Print" },
   { src: taka, title: "TAKA Pro League", category: "Affiches" },
-  { src: merch, title: "Print — Goodies", category: "Print" },
+  { src: merch, title: "Print · Goodies", category: "Print" },
 ];

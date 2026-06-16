@@ -1,10 +1,67 @@
+import { useRef } from "react";
 import Marquee from "react-fast-marquee";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Section } from "@/components/layout/Section";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { projects, type Project } from "@/data/projects";
 import spaceHero from "@/assets/hero/space-hero.webp";
+
+// Hero SPACE, clone fidèle du hero /spaces de HoHoney :
+// section min-h-svh, image en fond avec PARALLAX subtil (≈80px) au scroll
+// (même mécanisme --parallax-overflow que les affiches), teinte navy par-dessus,
+// sous-titre + titre centrés, et marquee géant accent ancré en bas (translate-y-20%).
+const PARALLAX = 80; // px de débordement haut/bas, comme --parallax-overflow-lg de HoH
+
+function SpaceHero() {
+  const { t } = useLanguage();
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Progression de la section dans le viewport -> translateY du média.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [PARALLAX, -PARALLAX]);
+
+  return (
+    <section
+      ref={ref}
+      className="relative isolate flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 py-40 text-white lg:py-56"
+    >
+      {/* Couche parallax (l'image déborde de PARALLAX px en haut/bas, translateY au scroll) */}
+      <div className="absolute inset-0 -z-2 overflow-hidden">
+        <motion.div
+          className="absolute inset-x-0 -inset-y-20"
+          style={reduce ? undefined : { y }}
+        >
+          <img src={spaceHero} alt="" aria-hidden="true" className="size-full object-cover" />
+        </motion.div>
+      </div>
+
+      {/* Teinte navy par-dessus l'image pour la lisibilité du texte blanc */}
+      <div className="pointer-events-none absolute inset-0 -z-1 bg-navy/50" />
+
+      {/* Sous-titre centré (comme HoH, petit texte au-dessus du marquee) */}
+      <div className="mx-auto flex max-w-[1054px] flex-col items-center gap-4 lg:gap-6">
+        <p className="max-w-md text-center text-base uppercase tracking-[0.2em] sm:text-lg">
+          {t.space.subtitle}
+        </p>
+      </div>
+
+      {/* Marquee géant, exactement le style du nom qui défile sur Home, remonté un peu */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-[8%] -z-1">
+        <Marquee speed={80} gradient={false} autoFill>
+          <span className="hero-name mx-12 font-bold uppercase leading-none text-white/60 text-[clamp(7rem,22vw,18rem)]">
+            {t.space.marquee}
+          </span>
+        </Marquee>
+      </div>
+    </section>
+  );
+}
 
 // Une affiche + sa légende (titre puis catégorie atténuée), comme le modèle.
 function Poster({ project, ratio = 0.8 }: { project: Project; ratio?: number }) {
@@ -48,7 +105,7 @@ function RowTextTwo({
     <Section theme="marine" className="min-h-0">
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
         <Reveal className={reverse ? "lg:order-2 lg:pl-8" : "lg:pr-8"}>
-          <h2 className="font-poster uppercase text-3xl leading-tight sm:text-4xl">{title}</h2>
+          <h2 className="font-script text-6xl leading-tight sm:text-7xl">{title}</h2>
           <p className="mt-5 max-w-md text-lg text-theme-text-primary/80">{text}</p>
         </Reveal>
         <div className={"grid grid-cols-2 gap-4 " + (reverse ? "lg:order-1" : "")}>
@@ -65,25 +122,8 @@ export default function Portfolio() {
 
   return (
     <div className="theme-marine bg-theme-bg-primary text-theme-text-primary">
-      {/* Hero plein écran : image bleutée + petit texte centré haut + titre géant bleu */}
-      <section className="relative flex h-[100svh] min-h-[560px] items-center justify-center overflow-hidden">
-        <img src={spaceHero} alt="" aria-hidden="true" className="absolute inset-0 size-full object-cover" />
-        {/* Léger dégradé bas uniquement, pour le petit texte — l'image reste nette. */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-navy/40 to-transparent" />
-
-        <p className="absolute inset-x-0 top-[20%] mx-auto max-w-md px-6 text-center text-base text-white/90 sm:text-lg">
-          {t.space.subtitle}
-        </p>
-
-        {/* Titre géant qui défile — bleu clair lisible, Bristone Bold (police payante) */}
-        <div className="absolute inset-x-0">
-          <Marquee speed={80} gradient={false} autoFill>
-            <span className="mx-12 font-poster uppercase leading-[0.85] text-navy text-[clamp(5rem,19vw,30rem)]">
-              {t.space.marquee}
-            </span>
-          </Marquee>
-        </div>
-      </section>
+      {/* Hero plein écran qui se referme par le bas au scroll (effet HoHoney) */}
+      <SpaceHero />
 
       {/* Séquence façon /spaces : 3 -> texte+2 -> 2+texte -> 3 */}
       <RowThree items={projects.slice(0, 3)} />

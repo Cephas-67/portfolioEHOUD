@@ -3,41 +3,33 @@
 @tailwind utilities;
 
 /* ---------------------------------------------------------------------------
-   Polices — charte officielle « Le Bleu Créatif » (3 familles, auto-hébergées)
-   · Bristone   → grands titres   (display expanded, reconvertie depuis le .ttf)
-   · Work Sans  → corps de texte
-   · Shrikhand  → logotype « Le Bleu Créatif » uniquement
-   Aucune dépendance réseau (pas de Google Fonts).
---------------------------------------------------------------------------- */
+   Polices, « Le Bleu Créatif » (3 rôles, auto-hébergées, aucune dépendance réseau)
+   · Pinyon Script  → grands titres (calligraphie)
+   · Bristone Display → navbar, footer, labels, libellés UI
+   · Work Sans      → corps de texte
+   Noms de famille avec suffixe « LBC » : évite qu'une police installée
+   localement (tu as Bristone sur ton PC) ne masque le fichier web. */
 
-/* Bristone — grands titres. Noms de famille UNIQUES (suffixe « LBC ») pour
-   éviter qu'une police Bristone installée localement ne masque le fichier web. */
 @font-face {
-  font-family: "Bristone LBC";
-  src: url("./assets/fonts/bristone-regular.woff2") format("woff2");
+  font-family: "Pinyon Script LBC";
+  src: url("./assets/fonts/pinyon-script.woff2") format("woff2");
   font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Bristone LBC";
-  src: url("./assets/fonts/bristone-bold.woff2") format("woff2");
-  font-weight: 700;
   font-display: swap;
 }
 @font-face {
   font-family: "Bristone Display LBC";
   src: url("./assets/fonts/bristone-display.woff2") format("woff2");
-  font-weight: 100 900; /* couvre tous les poids → ne retombe jamais sur un autre Bristone */
+  font-weight: 100 900;
   font-display: swap;
 }
 @font-face {
   font-family: "Bristone Hollow LBC";
   src: url("./assets/fonts/bristone-display-hollow.woff2") format("woff2");
-  font-weight: 400;
+  font-weight: 100 900;
   font-display: swap;
 }
 
-/* Work Sans — corps de texte (400 → 700) */
+/* Work Sans, corps de texte (400 → 700) */
 @font-face {
   font-family: "Work Sans";
   src: url("./assets/fonts/worksans-400.woff2") format("woff2");
@@ -63,25 +55,29 @@
   font-display: swap;
 }
 
-/* Shrikhand — logotype uniquement */
-@font-face {
-  font-family: "Shrikhand";
-  src: url("./assets/fonts/shrikhand-400.woff2") format("woff2");
-  font-weight: 400;
-  font-display: swap;
+/* Nom EHOUD du hero, Bristone Hollow appliquée en dur (indépendant de Tailwind). */
+.hero-name {
+  font-family: "Bristone Hollow LBC", "Bristone Display LBC", sans-serif;
+}
+
+/* Bouton CTA au bleu exact du logo. */
+.cta-logo {
+  background-color: hsl(var(--logo));
+  color: #fff;
 }
 
 /* ---------------------------------------------------------------------------
-   Tokens « Le Bleu Créatif » — palette 100 % bleue, 4 variantes.
+   Tokens « Le Bleu Créatif », palette 100 % bleue, 4 variantes.
    Triplets HSL (jamais de hex dans les composants).
 --------------------------------------------------------------------------- */
 @layer base {
   :root {
     /* Palette officielle */
-    --navy: 213 62% 24%;   /* #173861 — fonds sombres, titres */
-    --sky: 198 82% 71%;    /* #79CDF2 — blobs, accents doux */
-    --blue: 203 83% 39%;   /* #1178B7 — accent vif, CTA, hover */
-    --pale: 200 71% 96%;   /* #EBF7FD — fonds clairs, surfaces */
+    --navy: 213 62% 24%;   /* #173861, fonds sombres, titres */
+    --sky: 198 82% 71%;    /* #79CDF2, blobs, accents doux */
+    --blue: 203 83% 39%;   /* #1178B7, accent vif, CTA, hover */
+    --pale: 200 71% 96%;   /* #EBF7FD, fonds clairs, surfaces */
+    --logo: 220 96% 47%;   /* #0553EC, bleu exact du logo SVG (CTA) */
     --white: 0 0% 100%;
 
     /* Rôles thématiques (5 rôles par section, mécanisme hérité du modèle).
@@ -95,7 +91,7 @@
     --radius: 0.75rem;
   }
 
-  /* Thème clair — sections aérées (fond pâle, surfaces navy) */
+  /* Thème clair, sections aérées (fond pâle, surfaces navy) */
   .theme-pale {
     --theme-bg-primary: var(--pale);
     --theme-bg-secondary: var(--navy);
@@ -104,7 +100,7 @@
     --theme-accent: var(--blue);
   }
 
-  /* Thème ciel — sections douces (fond sky, texte navy) */
+  /* Thème ciel, sections douces (fond sky, texte navy) */
   .theme-sky {
     --theme-bg-primary: var(--sky);
     --theme-bg-secondary: var(--navy);
@@ -113,7 +109,7 @@
     --theme-accent: var(--navy);
   }
 
-  /* Thème bleu vif — moments forts (fond blue, accent sky) */
+  /* Thème bleu vif, moments forts (fond blue, accent sky) */
   .theme-blue {
     --theme-bg-primary: var(--blue);
     --theme-bg-secondary: var(--pale);

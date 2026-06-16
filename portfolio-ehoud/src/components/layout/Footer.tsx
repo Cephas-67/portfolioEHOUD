@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import { useLanguage } from "@/i18n/LanguageContext";
+import logo from "@/assets/logodef.svg";
 
 const EMAIL = "otitossouehoud@gmail.com";
 const LINKEDIN =
@@ -7,24 +6,21 @@ const LINKEDIN =
 const MEDIUM = "https://medium.com/@otitossouemmanuel";
 
 export function Footer() {
-  const { t } = useLanguage();
-
   return (
-    <footer className="theme-marine bg-theme-bg-primary px-4 py-16 text-theme-text-primary lg:px-6">
-      <div className="mx-auto grid max-w-[1400px] gap-10 md:grid-cols-4">
-        <div className="md:col-span-2">
-          <p className="font-display text-3xl">Le Bleu Créatif</p>
-          <p className="mt-2 max-w-sm text-theme-text-primary/70">{t.brand.role}</p>
-        </div>
+    <footer className="theme-marine relative z-10 overflow-hidden rounded-t-[2.5rem] bg-theme-bg-primary px-4 py-16 text-theme-text-primary shadow-[0_-24px_60px_-20px_rgba(0,0,0,0.45)] lg:px-6 lg:py-20">
+      {/* Logo BC en grand, hors flux (absolute) : il déborde et se fait couper
+          sans agrandir le footer. */}
+      <img
+        src={logo}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-44 right-0 w-[360px] translate-x-10 select-none drop-shadow-2xl md:w-[640px] md:translate-x-16"
+      />
 
-        <nav className="flex flex-col gap-2 text-theme-text-primary/80">
-          <Link to="/a-propos" className="hover:text-theme-accent">{t.nav.about}</Link>
-          <Link to="/portfolio" className="hover:text-theme-accent">{t.nav.portfolio}</Link>
-          <Link to="/entrepreneuriat" className="hover:text-theme-accent">{t.nav.ventures}</Link>
-          <Link to="/contact" className="hover:text-theme-accent">{t.nav.contact}</Link>
-        </nav>
-
-        <div className="flex flex-col gap-2 text-theme-text-primary/80">
+      <div className="relative z-10 mx-auto max-w-[1400px]">
+        {/* Marque + réseaux sociaux empilés */}
+        <p className="font-display text-3xl">Le Bleu Créatif</p>
+        <div className="mt-5 flex flex-col gap-2 text-theme-text-primary/80">
           <a href={`mailto:${EMAIL}`} className="hover:text-theme-accent">{EMAIL}</a>
           <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="hover:text-theme-accent">
             LinkedIn
@@ -33,10 +29,6 @@ export function Footer() {
             Medium
           </a>
         </div>
-      </div>
-
-      <div className="mx-auto mt-12 max-w-[1400px] border-t border-theme-text-primary/15 pt-6 text-sm text-theme-text-primary/60">
-        © {new Date().getFullYear()} Ehoud Emmanuel OTI-TOSSOU — Abomey-Calavi, Bénin
       </div>
     </footer>
   );

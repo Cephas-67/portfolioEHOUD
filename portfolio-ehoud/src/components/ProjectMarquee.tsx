@@ -3,7 +3,7 @@ import { useReducedMotion } from "framer-motion";
 import { projects, type Project } from "@/data/projects";
 
 // Une tuile du marquee : image en hauteur fixe (largeur naturelle = variété des
-// formats), léger zoom au survol et libellé qui apparaît — comme le modèle.
+// formats), léger zoom au survol et libellé qui apparaît, comme le modèle.
 function Tile({ project }: { project: Project }) {
   return (
     <figure className="group/item relative mx-3 h-56 overflow-hidden rounded-xl md:h-72">
@@ -14,7 +14,7 @@ function Tile({ project }: { project: Project }) {
         className="h-full w-auto max-w-none object-cover transition-transform duration-600 ease-in-out group-hover/item:scale-105"
       />
       <figcaption className="absolute inset-x-0 bottom-0 translate-y-full bg-theme-bg-primary/80 px-4 py-2 text-sm text-theme-text-primary opacity-0 transition-all duration-300 group-hover/item:translate-y-0 group-hover/item:opacity-100">
-        <span className="font-accent uppercase tracking-wide text-theme-accent">
+        <span className="font-display uppercase tracking-wide text-theme-accent">
           {project.category}
         </span>
         <span className="ml-2">{project.title}</span>

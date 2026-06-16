@@ -15,7 +15,7 @@ export function NavLinkPill({ to, children }: NavLinkPillProps) {
       to={to}
       className={({ isActive }) =>
         cn(
-          "flex h-full items-center justify-center px-6 font-poster text-sm",
+          "flex h-full items-center justify-center px-6 font-display text-sm",
           "rounded-none transition-all duration-400 ease-in-out",
           "bg-theme-bg-secondary text-theme-text-secondary",
           "hover:rounded-full hover:bg-theme-accent hover:text-theme-bg-primary",

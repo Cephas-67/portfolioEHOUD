@@ -1,83 +1,69 @@
-import { Link } from "react-router-dom";
+import Marquee from "react-fast-marquee";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { Blob } from "@/components/Blob";
 import { Reveal } from "@/components/Reveal";
 import { HeroShowcase } from "@/components/HeroShowcase";
-import { FontTester } from "@/components/FontTester";
-import { Button } from "@/components/ui/button";
+import DotField from "@/components/DotField";
 import portrait from "@/assets/ehoud-hero.webp";
+
+const fullName = "Ehoud Emmanuel OTI-TOSSOU";
 
 export default function Home() {
   const { t } = useLanguage();
 
   return (
-    <>
-    <FontTester />
-    <section className="theme-marine relative overflow-hidden bg-theme-bg-primary text-theme-text-primary">
-      {/* Blobs signature en arrière-plan */}
-      <Blob className="left-[-6%] top-24 h-72 w-72 opacity-30" variant={0} />
-      <Blob className="right-[8%] bottom-10 h-96 w-96 opacity-20" variant={1} delay={1.5} />
-      <Blob className="left-[30%] bottom-[-8%] h-64 w-64 opacity-10" variant={0} delay={3} />
+    <div className="theme-marine relative bg-theme-bg-primary text-theme-text-primary">
+      {/* Fond interactif : champ de points qui réagit au curseur (React Bits).
+          `fixed` = la grille ne couvre qu'un écran (perf), mais reste derrière toutes
+          les sections au scroll. Le footer (relative z-10) passe par-dessus. */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <DotField
+          dotRadius={1.5}
+          dotSpacing={18}
+          cursorRadius={220}
+          bulgeStrength={60}
+          sparkle={false}
+          waveAmplitude={0}
+          glowColor="transparent"
+        />
+      </div>
 
-      <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] max-w-[1400px] items-center gap-8 px-4 py-16 md:grid-cols-2 lg:px-6">
-        {/* Colonne texte */}
-        <div className="order-2 md:order-1">
-          <Reveal>
-            <p className="font-accent text-sm uppercase tracking-[0.2em] text-theme-accent">
-              {t.hero.eyebrow}
-            </p>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <h1 className="mt-4 font-poster uppercase text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">
-              {t.hero.title}
-            </h1>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-6 max-w-md text-lg text-theme-text-primary/75">{t.hero.subtitle}</p>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild>
-                <Link to="/portfolio">{t.hero.ctaPortfolio}</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link to="/contact">{t.hero.ctaContact}</Link>
-              </Button>
-            </div>
-          </Reveal>
-        </div>
+      <section className="relative z-10 flex min-h-[calc(100vh-5rem)] items-center overflow-hidden">
+        {/* Nom complet qui défile en fond, H1, Bristone Hollow, même vitesse que SPACE (speed 80) */}
+        <h1
+          aria-label={fullName}
+          className="pointer-events-none absolute inset-0 z-0 m-0 flex select-none items-center [contain:paint]"
+        >
+          <Marquee speed={80} gradient={false} autoFill>
+            {/* transform-gpu + will-change : le texte est mis en cache comme texture,
+                il glisse sans se re-mélanger au DotField à chaque frame (fluidité scroll). */}
+            <span className="hero-name mx-12 transform-gpu font-bold uppercase leading-none text-white/60 [will-change:transform] text-[clamp(7rem,22vw,18rem)]">
+              {fullName}
+            </span>
+          </Marquee>
+        </h1>
 
-        {/* Portrait détouré */}
-        <div className="order-1 flex justify-center md:order-2 md:justify-end">
+        {/* Portrait détouré, au-dessus du nom */}
+        <div className="relative z-10 mx-auto flex w-full max-w-[1400px] justify-center px-4 md:justify-end lg:px-6">
           <img
             src={portrait}
             alt="Ehoud Emmanuel OTI-TOSSOU"
-            className="h-auto w-[min(80%,420px)] drop-shadow-2xl"
+            className="h-auto w-[min(80%,460px)] drop-shadow-2xl md:mr-[18px]"
             loading="eager"
           />
         </div>
-      </div>
-    </section>
+      </section>
 
-    {/* Galerie animée — aperçu des travaux qui défilent (signature HoH) */}
-    <section className="theme-marine bg-theme-bg-primary py-16 text-theme-text-primary">
-      <div className="mx-auto mb-10 max-w-[1400px] px-4 lg:px-6">
-        <Reveal>
-          <p className="font-accent text-sm uppercase tracking-[0.2em] text-theme-accent">
-            {t.work.eyebrow}
-          </p>
-          <h2 className="mt-3 max-w-2xl font-poster uppercase text-3xl leading-tight sm:text-4xl">
-            {t.work.title}
-          </h2>
-        </Reveal>
-      </div>
-      <HeroShowcase />
-      <div className="mx-auto mt-10 max-w-[1400px] px-4 lg:px-6">
-        <Button asChild variant="outline">
-          <Link to="/portfolio">{t.work.cta}</Link>
-        </Button>
-      </div>
-    </section>
-    </>
+      {/* Galerie animée, aperçu des travaux qui défilent (signature HoH) */}
+      <section className="relative z-10 py-16">
+        <div className="mx-auto mb-10 max-w-[1400px] px-4 lg:px-6">
+          <Reveal>
+            <h2 className="max-w-3xl font-script text-4xl leading-tight sm:text-5xl lg:text-6xl">
+              {t.work.title}
+            </h2>
+          </Reveal>
+        </div>
+        <HeroShowcase />
+      </section>
+    </div>
   );
 }

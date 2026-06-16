@@ -33,13 +33,10 @@ export default {
         },
       },
       fontFamily: {
-        // Hiérarchie charte : Shrikhand (display/logo) · Work Sans (corps) · Bristone (accent)
+        // 3 rôles : Work Sans (corps) · Bristone Display (navbar/footer/labels) · Pinyon (grands titres)
         sans: ['"Work Sans"', "ui-sans-serif", "system-ui", "sans-serif"],
-        display: ['"Shrikhand"', "ui-serif", "serif"],
-        accent: ['"Bristone LBC"', '"Work Sans"', "sans-serif"],
-        poster: ['"Bristone Display LBC"', '"Work Sans"', "sans-serif"],
-        // Grands titres : Bristone Display Hollow (lettres en contour)
-        hollow: ['"Bristone Hollow LBC"', '"Bristone LBC"', "sans-serif"],
+        display: ['"Bristone Display LBC"', '"Work Sans"', "sans-serif"],
+        script: ['"Pinyon Script LBC"', "cursive"],
       },
       borderRadius: {
         lg: "var(--radius)",
