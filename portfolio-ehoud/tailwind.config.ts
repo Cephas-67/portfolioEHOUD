@@ -36,8 +36,10 @@ export default {
         // Hiérarchie charte : Shrikhand (display/logo) · Work Sans (corps) · Bristone (accent)
         sans: ['"Work Sans"', "ui-sans-serif", "system-ui", "sans-serif"],
         display: ['"Shrikhand"', "ui-serif", "serif"],
-        accent: ['"Bristone"', '"Work Sans"', "sans-serif"],
-        poster: ['"Bristone Display"', '"Bristone"', "sans-serif"],
+        accent: ['"Bristone LBC"', '"Work Sans"', "sans-serif"],
+        poster: ['"Bristone Display LBC"', '"Work Sans"', "sans-serif"],
+        // Grands titres : Bristone Display Hollow (lettres en contour)
+        hollow: ['"Bristone Hollow LBC"', '"Bristone LBC"', "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

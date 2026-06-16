@@ -35,6 +35,8 @@ export type Translation = {
     subtitle: string;
     blockTitle: string;
     blockText: string;
+    block2Title: string;
+    block2Text: string;
   };
 };
 
@@ -72,6 +74,9 @@ export const translations: Record<Lang, Translation> = {
       blockTitle: "Chaque visuel raconte une histoire",
       blockText:
         "De l'idée à l'impression, je construis des identités qui se reconnaissent du premier coup d'œil et qui tiennent dans le temps. Chaque projet part d'une intention claire : créer de la confiance et laisser une trace.",
+      block2Title: "Du concept à la réalité",
+      block2Text:
+        "Affiches, campagnes sociales, supports imprimés : je décline une même idée forte sur tous les formats, pour que la marque parle d'une seule voix, partout.",
     },
   },
   en: {
@@ -107,6 +112,9 @@ export const translations: Record<Lang, Translation> = {
       blockTitle: "Every visual tells a story",
       blockText:
         "From idea to print, I build identities that are recognised at first glance and last over time. Each project starts from a clear intention: to build trust and leave a mark.",
+      block2Title: "From concept to reality",
+      block2Text:
+        "Posters, social campaigns, printed material: I carry one strong idea across every format, so the brand speaks with a single voice, everywhere.",
     },
   },
 };

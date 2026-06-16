@@ -3,27 +3,71 @@
 @tailwind utilities;
 
 /* ---------------------------------------------------------------------------
-   Polices — charte officielle « Le Bleu Créatif »
-   · Shrikhand  → display / logotype (chargée via Google Fonts, voir index.html)
-   · Work Sans  → corps de texte    (Google Fonts)
-   · Bristone   → titres accent     (auto-hébergée, woff2 extraits de la charte)
+   Polices — charte officielle « Le Bleu Créatif » (3 familles, auto-hébergées)
+   · Bristone   → grands titres   (display expanded, reconvertie depuis le .ttf)
+   · Work Sans  → corps de texte
+   · Shrikhand  → logotype « Le Bleu Créatif » uniquement
+   Aucune dépendance réseau (pas de Google Fonts).
 --------------------------------------------------------------------------- */
+
+/* Bristone — grands titres. Noms de famille UNIQUES (suffixe « LBC ») pour
+   éviter qu'une police Bristone installée localement ne masque le fichier web. */
 @font-face {
-  font-family: "Bristone";
-  src: url("./assets/fonts/bristone-bold.woff2") format("woff2");
-  font-weight: 700;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Bristone";
+  font-family: "Bristone LBC";
   src: url("./assets/fonts/bristone-regular.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
-  font-family: "Bristone Display";
-  src: url("./assets/fonts/bristone-display.woff2") format("woff2");
+  font-family: "Bristone LBC";
+  src: url("./assets/fonts/bristone-bold.woff2") format("woff2");
   font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bristone Display LBC";
+  src: url("./assets/fonts/bristone-display.woff2") format("woff2");
+  font-weight: 100 900; /* couvre tous les poids → ne retombe jamais sur un autre Bristone */
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bristone Hollow LBC";
+  src: url("./assets/fonts/bristone-display-hollow.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* Work Sans — corps de texte (400 → 700) */
+@font-face {
+  font-family: "Work Sans";
+  src: url("./assets/fonts/worksans-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Work Sans";
+  src: url("./assets/fonts/worksans-500.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Work Sans";
+  src: url("./assets/fonts/worksans-600.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Work Sans";
+  src: url("./assets/fonts/worksans-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* Shrikhand — logotype uniquement */
+@font-face {
+  font-family: "Shrikhand";
+  src: url("./assets/fonts/shrikhand-400.woff2") format("woff2");
+  font-weight: 400;
   font-display: swap;
 }
 
@@ -89,12 +133,16 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Scrollbars masquées (le scroll fonctionne, mais rien de visible) */
-  html {
+  /* Scrollbars masquées partout + pas de débordement horizontal */
+  html,
+  body {
+    overflow-x: hidden;
+  }
+  * {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
   }
-  html::-webkit-scrollbar {
+  *::-webkit-scrollbar {
     display: none; /* Chrome/Safari */
   }
 }

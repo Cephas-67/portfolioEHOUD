@@ -3,6 +3,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { Blob } from "@/components/Blob";
 import { Reveal } from "@/components/Reveal";
 import { HeroShowcase } from "@/components/HeroShowcase";
+import { FontTester } from "@/components/FontTester";
 import { Button } from "@/components/ui/button";
 import portrait from "@/assets/ehoud-hero.webp";
 
@@ -11,6 +12,7 @@ export default function Home() {
 
   return (
     <>
+    <FontTester />
     <section className="theme-marine relative overflow-hidden bg-theme-bg-primary text-theme-text-primary">
       {/* Blobs signature en arrière-plan */}
       <Blob className="left-[-6%] top-24 h-72 w-72 opacity-30" variant={0} />
@@ -26,7 +28,7 @@ export default function Home() {
             </p>
           </Reveal>
           <Reveal delay={0.05}>
-            <h1 className="mt-4 font-display text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-4 font-poster uppercase text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">
               {t.hero.title}
             </h1>
           </Reveal>
@@ -64,7 +66,7 @@ export default function Home() {
           <p className="font-accent text-sm uppercase tracking-[0.2em] text-theme-accent">
             {t.work.eyebrow}
           </p>
-          <h2 className="mt-3 max-w-2xl font-display text-3xl leading-tight sm:text-4xl">
+          <h2 className="mt-3 max-w-2xl font-poster uppercase text-3xl leading-tight sm:text-4xl">
             {t.work.title}
           </h2>
         </Reveal>
