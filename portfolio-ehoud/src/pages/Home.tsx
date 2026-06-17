@@ -103,7 +103,7 @@ export default function Home() {
             <motion.img
               src={portrait}
               alt="Ehoud Emmanuel OTI-TOSSOU"
-              className="h-auto w-full drop-shadow-2xl"
+              className="portrait-fade h-auto w-full drop-shadow-2xl"
               loading="eager"
               initial={reduce ? false : { x: "120%", opacity: 0 }}
               animate={reduce ? undefined : ready ? { x: 0, opacity: 1 } : { x: "120%", opacity: 0 }}

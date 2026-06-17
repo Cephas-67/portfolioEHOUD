@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
@@ -16,6 +16,11 @@ type PageHeroProps = {
 export function PageHero({ image, eyebrow, title }: PageHeroProps) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
+  // Tant que l'image de fond n'est pas chargée, on garde le texte caché : sinon, à la
+  // première visite d'une page, on verrait le gros marquee blanc sur le fond navy nu
+  // (le « flash de page bleue avec du texte » au changement de page).
+  const [loaded, setLoaded] = useState(false);
+  const fade = `transition-opacity duration-700 ${loaded ? "opacity-100" : "opacity-0"}`;
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -31,7 +36,14 @@ export function PageHero({ image, eyebrow, title }: PageHeroProps) {
       {/* Couche parallax : l'image déborde de PARALLAX px en haut/bas. */}
       <div className="absolute inset-0 -z-2 overflow-hidden">
         <motion.div className="absolute inset-x-0 -inset-y-20" style={reduce ? undefined : { y }}>
-          <img src={image} alt="" aria-hidden="true" className="size-full object-cover" />
+          <img
+            src={image}
+            alt=""
+            aria-hidden="true"
+            onLoad={() => setLoaded(true)}
+            ref={(node) => node?.complete && setLoaded(true)}
+            className={`size-full object-cover ${fade}`}
+          />
         </motion.div>
       </div>
 
@@ -39,12 +51,12 @@ export function PageHero({ image, eyebrow, title }: PageHeroProps) {
       <div className="pointer-events-none absolute inset-0 -z-1 bg-navy/50" />
 
       {/* Sous-titre centré (petit texte au-dessus du marquee). */}
-      <div className="mx-auto flex max-w-[1054px] flex-col items-center gap-4 lg:gap-6">
+      <div className={`mx-auto flex max-w-[1054px] flex-col items-center gap-4 lg:gap-6 ${fade}`}>
         <p className="max-w-md text-center text-base uppercase tracking-[0.2em] sm:text-lg">{eyebrow}</p>
       </div>
 
       {/* Grand marquee ancré en bas, même style que SPACE/Home. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-[8%] -z-1">
+      <div className={`pointer-events-none absolute inset-x-0 bottom-[8%] -z-1 ${fade}`}>
         <Marquee speed={80} gradient={false} autoFill>
           <span className="hero-name mx-12 transform-gpu font-bold uppercase leading-none text-white/60 [will-change:transform] text-[clamp(7rem,22vw,18rem)]">
             {title}

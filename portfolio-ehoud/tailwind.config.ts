@@ -33,10 +33,11 @@ export default {
         },
       },
       fontFamily: {
-        // 3 rôles : Work Sans (corps) · Bristone Display (navbar/footer/labels) · Mokgech (grands titres)
+        // 3 rôles : Work Sans (corps) · Bristone Display (navbar/footer/labels) · Pinyon Script (grands titres)
         sans: ['"Work Sans"', "ui-sans-serif", "system-ui", "sans-serif"],
         display: ['"Bristone Display LBC"', '"Work Sans"', "sans-serif"],
-        script: ['"Mokgech"', "cursive"],
+        // Grands titres calligraphiés. L'horloge garde Mokgech via la classe .font-ios.
+        script: ['"Pinyon Script LBC"', "cursive"],
       },
       borderRadius: {
         lg: "var(--radius)",

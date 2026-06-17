@@ -55,6 +55,14 @@
   font-display: swap;
 }
 
+/* Portrait du hero Home : le bas de la photo (les pieds) se fond en douceur dans le
+   fond au lieu d'être coupé net. Un masque dégradé rend les derniers ~16% de la
+   hauteur progressivement transparents → le pied « rentre » dans le bg. */
+.portrait-fade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+}
+
 /* Nom EHOUD du hero, Bristone Hollow appliquée en dur (indépendant de Tailwind). */
 .hero-name {
   font-family: "Bristone Hollow LBC", "Bristone Display LBC", sans-serif;
