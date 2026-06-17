@@ -12,7 +12,8 @@ type FillButtonProps = {
   children: React.ReactNode;
   className?: string;
   color?: string;
-  to?: string;
+  to?: string; // route interne (react-router)
+  href?: string; // lien externe (nouvelle fenêtre)
 } & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">;
 
 export function FillButton({
@@ -20,6 +21,7 @@ export function FillButton({
   className,
   color = "hsl(var(--blue))",
   to,
+  href,
   ...rest
 }: FillButtonProps) {
   const fillRef = useRef<HTMLSpanElement>(null);
@@ -75,6 +77,21 @@ export function FillButton({
       <Link to={to} className={classes} style={style} onMouseEnter={enter} onMouseLeave={leave}>
         {content}
       </Link>
+    );
+  }
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={classes}
+        style={style}
+        onMouseEnter={enter}
+        onMouseLeave={leave}
+      >
+        {content}
+      </a>
     );
   }
   return (

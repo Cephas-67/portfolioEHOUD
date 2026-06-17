@@ -37,6 +37,36 @@ export type Translation = {
     blockText: string;
     block2Title: string;
     block2Text: string;
+    story: { title: string; text: string }[];
+  };
+  journal: {
+    heroEyebrow: string;
+    heroTitle: string;
+    intro: string;
+    readMore: string;
+    allOnMedium: string;
+  };
+  contact: {
+    heroTitle: string;
+    hint: string;
+    work: string;
+    feedback: string;
+    workHeading: string;
+    workIntro: string;
+    feedbackHeading: string;
+    feedbackIntro: string;
+    name: string;
+    namePh: string;
+    email: string;
+    emailPh: string;
+    message: string;
+    messagePhWork: string;
+    messagePhFeedback: string;
+    send: string;
+    errName: string;
+    errEmail: string;
+    errMessage: string;
+    success: string;
   };
   about: {
     heroEyebrow: string;
@@ -104,6 +134,76 @@ export const translations: Record<Lang, Translation> = {
       block2Title: "Du concept à la réalité",
       block2Text:
         "Affiches, campagnes sociales, supports imprimés : je décline une même idée forte sur tous les formats, pour que la marque parle d'une seule voix, partout.",
+      story: [
+        {
+          title: "Une identité qui se reconnaît",
+          text: "Un logo n'est pas un décor : c'est le premier mot d'une marque. Je cherche la forme la plus simple qui dise le plus de choses.",
+        },
+        {
+          title: "Du sens avant le style",
+          text: "Chaque projet part d'une intention claire. Le style vient ensuite, au service du message, jamais l'inverse.",
+        },
+        {
+          title: "Marquer les esprits",
+          text: "Une bonne affiche s'arrête dans le scroll : la couleur juste, une hiérarchie nette, une idée forte qui reste.",
+        },
+        {
+          title: "Une voix, tous les formats",
+          text: "Du carré social au grand format imprimé, je décline une même idée pour que la marque parle d'une seule voix.",
+        },
+        {
+          title: "Des campagnes qui engagent",
+          text: "Sensibiliser, c'est faire ressentir avant de faire lire. Je construis des séries qui tiennent le regard et le propos.",
+        },
+        {
+          title: "Le détail qui change tout",
+          text: "Alignements, contrastes, respirations : c'est dans les petits réglages que se joue la différence entre correct et mémorable.",
+        },
+        {
+          title: "Penser pour l'impression",
+          text: "Un visuel ne vit pas que sur un écran. Je travaille pour que la couleur et la matière tiennent aussi sur le papier.",
+        },
+        {
+          title: "Raconter une histoire",
+          text: "Derrière chaque réalisation : une marque, un public, un objectif. Le design relie les trois en une seule image.",
+        },
+        {
+          title: "Créer de la confiance",
+          text: "Une identité cohérente rassure. C'est ce qui fait qu'on se souvient d'une marque et qu'on y revient.",
+        },
+      ],
+    },
+    journal: {
+      heroEyebrow: "Réflexions, terrains et engagements",
+      heroTitle: "Journal",
+      intro:
+        "J'écris pour donner du sens : société, santé, droits, culture et innovation, vus depuis le Bénin. Articles publiés sur Medium.",
+      readMore: "Lire sur Medium",
+      allOnMedium: "Tous les articles sur Medium",
+    },
+    contact: {
+      heroTitle: "Travaillons ensemble",
+      hint: "Bougez la souris pour révéler",
+      work: "Travaillons",
+      feedback: "Feedback",
+      workHeading: "Parlons de votre projet",
+      workIntro:
+        "Une idée, une marque à lancer, un visuel à créer ? Dites-m'en plus, je reviens vers vous rapidement.",
+      feedbackHeading: "Votre retour compte",
+      feedbackIntro:
+        "Un avis sur mon travail, une remarque, une suggestion ? Cet espace est à vous.",
+      name: "Votre nom",
+      namePh: "Comment vous appelez-vous ?",
+      email: "Votre email",
+      emailPh: "vous@exemple.com",
+      message: "Votre message",
+      messagePhWork: "Décrivez votre projet en quelques lignes...",
+      messagePhFeedback: "Partagez votre retour...",
+      send: "Envoyer le message",
+      errName: "Indiquez votre nom (2 caractères minimum).",
+      errEmail: "Adresse email invalide.",
+      errMessage: "Votre message est un peu court (10 caractères minimum).",
+      success: "Merci ! Votre messagerie s'ouvre pour envoyer le message.",
     },
     about: {
       heroEyebrow: "Designer graphique · Social Media Manager",
@@ -172,6 +272,75 @@ export const translations: Record<Lang, Translation> = {
       block2Title: "From concept to reality",
       block2Text:
         "Posters, social campaigns, printed material: I carry one strong idea across every format, so the brand speaks with a single voice, everywhere.",
+      story: [
+        {
+          title: "An identity you recognise",
+          text: "A logo isn't decoration: it's a brand's first word. I look for the simplest shape that says the most.",
+        },
+        {
+          title: "Meaning before style",
+          text: "Every project starts from a clear intention. Style comes after, serving the message, never the other way around.",
+        },
+        {
+          title: "Made to leave a mark",
+          text: "A good poster stops the scroll: the right colour, a clear hierarchy, one strong idea that stays.",
+        },
+        {
+          title: "One voice, every format",
+          text: "From the social square to large-format print, I carry one idea so the brand speaks with a single voice.",
+        },
+        {
+          title: "Campaigns that engage",
+          text: "Raising awareness means making people feel before they read. I build series that hold both the eye and the point.",
+        },
+        {
+          title: "The detail that changes everything",
+          text: "Alignment, contrast, breathing room: the small adjustments are where correct becomes memorable.",
+        },
+        {
+          title: "Designed for print",
+          text: "A visual doesn't only live on a screen. I make sure colour and texture hold up on paper too.",
+        },
+        {
+          title: "Telling a story",
+          text: "Behind each piece: a brand, an audience, a goal. Design ties the three together in one image.",
+        },
+        {
+          title: "Building trust",
+          text: "A consistent identity reassures. That's what makes a brand memorable and worth coming back to.",
+        },
+      ],
+    },
+    journal: {
+      heroEyebrow: "Reflections, fieldwork and advocacy",
+      heroTitle: "Journal",
+      intro:
+        "I write to make sense of things: society, health, rights, culture and innovation, seen from Benin. Articles published on Medium.",
+      readMore: "Read on Medium",
+      allOnMedium: "All articles on Medium",
+    },
+    contact: {
+      heroTitle: "Let's work together",
+      hint: "Move your mouse to reveal",
+      work: "Let's work",
+      feedback: "Feedback",
+      workHeading: "Tell me about your project",
+      workIntro:
+        "An idea, a brand to launch, a visual to create? Tell me more, I'll get back to you quickly.",
+      feedbackHeading: "Your feedback matters",
+      feedbackIntro: "Thoughts on my work, a remark, a suggestion? This space is yours.",
+      name: "Your name",
+      namePh: "What's your name?",
+      email: "Your email",
+      emailPh: "you@example.com",
+      message: "Your message",
+      messagePhWork: "Describe your project in a few lines...",
+      messagePhFeedback: "Share your feedback...",
+      send: "Send message",
+      errName: "Please enter your name (min 2 characters).",
+      errEmail: "Invalid email address.",
+      errMessage: "Your message is a bit short (min 10 characters).",
+      success: "Thanks! Your mail app is opening to send the message.",
     },
     about: {
       heroEyebrow: "Graphic Designer · Social Media Manager",

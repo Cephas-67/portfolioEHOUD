@@ -14,11 +14,12 @@ export function Header() {
   const reduce = useReducedMotion();
   const ready = useIntroReady(); // la chorégraphie n'enclenche qu'à la fin du loading
 
+  // Ordre : Studio (à propos) -> Space (portfolio) -> Offre (services) -> le reste.
+  // Entrepreneuriat retiré de la nav.
   const links = [
     { to: "/a-propos", label: t.nav.about },
-    { to: "/services", label: t.nav.services },
     { to: "/portfolio", label: t.nav.portfolio },
-    { to: "/entrepreneuriat", label: t.nav.ventures },
+    { to: "/services", label: t.nav.services },
     { to: "/articles", label: t.nav.articles },
   ];
 
