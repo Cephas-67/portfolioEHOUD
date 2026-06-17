@@ -60,6 +60,85 @@
   font-family: "Bristone Hollow LBC", "Bristone Display LBC", sans-serif;
 }
 
+/* Titres des cartes Offre : Bristone Hollow appliquée en dur, même approche fiable
+   que .hero-name (la classe utilitaire font-display ne prend pas ici). */
+.service-title {
+  font-family: "Bristone Hollow LBC", "Bristone Display LBC", sans-serif;
+}
+
+/* Polices candidates pour l'horloge (OFL, auto-hébergées). On garde Fredoka,
+   Baloo 2 et Varela Round prêtes : il suffit de changer .font-ios pour comparer. */
+@font-face {
+  font-family: "Fredoka";
+  src: url("./assets/fonts/fredoka-500.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fredoka";
+  src: url("./assets/fonts/fredoka-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Baloo 2";
+  src: url("./assets/fonts/baloo2-500.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Baloo 2";
+  src: url("./assets/fonts/baloo2-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Baloo 2";
+  src: url("./assets/fonts/baloo2-800.woff2") format("woff2");
+  font-weight: 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Varela Round";
+  src: url("./assets/fonts/varelaround-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+/* Mokgech : police installée par l'utilisateur (1 sans barre du bas). Une seule
+   graisse, mappée sur toute la plage 100-900 pour éviter le faux-gras synthétique. */
+@font-face {
+  font-family: "Mokgech";
+  src: url("./assets/fonts/mokgech-regular.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* Horloge style One UI (Samsung) : police arrondie + chiffres tabulaires
+   (la largeur ne saute pas à chaque minute).
+   POUR COMPARER : remplacer "Mokgech" par "Baloo 2", "Varela Round" ou "Fredoka". */
+.font-ios {
+  font-family: "Mokgech", "Work Sans", sans-serif;
+  font-feature-settings: "tnum";
+  letter-spacing: -0.01em;
+}
+
+/* Effet « verre » des chiffres (look écran de verrouillage Samsung) :
+   dégradé clair-en-haut → translucide-en-bas, découpé sur le texte, donc le
+   fond d'écran transparaît à travers. Le double text-shadow donne la lueur. */
+.clock-glass {
+  background: linear-gradient(
+    180deg,
+    rgba(214, 208, 234, 0.92) 0%,
+    rgba(178, 188, 222, 0.68) 50%,
+    rgba(132, 158, 204, 0.42) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 16px rgba(90, 120, 200, 0.25));
+}
+
 /* Bouton CTA au bleu exact du logo. */
 .cta-logo {
   background-color: hsl(var(--logo));
@@ -79,6 +158,12 @@
     --pale: 200 71% 96%;   /* #EBF7FD, fonds clairs, surfaces */
     --logo: 220 96% 47%;   /* #0553EC, bleu exact du logo SVG (CTA) */
     --white: 0 0% 100%;
+
+    /* Cartes Offre : 2 bleus en plus pour 6 couleurs distinctes + encre du motif
+       tournant (navy très foncé, lu comme « noir » mais dans la famille bleue). */
+    --svc-teal: 189 72% 52%;
+    --svc-indigo: 224 64% 54%;
+    --svc-ink: 213 72% 9%;
 
     /* Rôles thématiques (5 rôles par section, mécanisme hérité du modèle).
        Défaut = "marine" : fond navy, surfaces pâles, accent bleu vif. */

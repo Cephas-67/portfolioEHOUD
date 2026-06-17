@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import Marquee from "react-fast-marquee";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { PageHero } from "@/components/PageHero";
 import { ParallaxImage } from "@/components/ParallaxImage";
@@ -127,10 +127,26 @@ function PortraitIntro({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-// Séquence scroll façon lenis.dev (technique, pas le contenu) : section très haute
-// avec un panneau épinglé. Au scroll : 1) le texte apparaît en ZOOM par-dessus une
-// nouvelle photo d'Ehoud, 2) un disque BLANC s'élargit et recouvre l'écran, 3) un
-// texte ÉPINGLÉ s'affiche sur le blanc. Le smooth scroll (Lenis) gère la fluidité.
+// Rideau « blocs » façon kevinkouakou.com : l'écran navy est fait de N colonnes
+// verticales qui se retirent en DÉCALÉ (stagger), alternées haut/bas, pour révéler
+// le blanc. Au scroll inverse elles reviennent (le rideau se referme).
+const REVEAL_COLS = 6;
+
+function RevealColumn({ index, progress }: { index: number; progress: MotionValue<number> }) {
+  // Chaque colonne part un peu après la précédente (effet séquentiel).
+  const start = 0.7 + index * 0.022;
+  const y = useTransform(progress, [start, start + 0.18], ["0%", index % 2 === 0 ? "-101%" : "101%"]);
+  return (
+    <motion.div
+      style={{ y, left: `${(index / REVEAL_COLS) * 100}%`, width: `calc(${100 / REVEAL_COLS}% + 1px)` }}
+      className="absolute top-0 z-20 h-full bg-navy"
+    />
+  );
+}
+
+// Séquence scroll façon lenis.dev : section très haute, panneau épinglé. Au scroll :
+// 1) photo, 2) le texte vient de très loin et fonce jusqu'à remplir l'écran,
+// 3) le rideau « blocs » s'ouvre et révèle le blanc, 4) texte ÉPINGLÉ.
 function ScrollShowcase() {
   const { t } = useLanguage();
   const a = t.about;
@@ -142,24 +158,20 @@ function ScrollShowcase() {
     offset: ["start start", "end end"],
   });
 
-  // Plages volontairement étalées : le zoom du texte se construit lentement sur
-  // une grande distance de scroll (le défilement n'est plus « trop rapide »).
+  // Plages très étalées (~760vh) : tout glisse lentement, façon lenis.
   // Phase 1 — photo qui s'installe d'abord (sur navy).
-  const photoScale = useTransform(scrollYProgress, [0, 0.45], [1.18, 1]);
-  const photoOpacity = useTransform(scrollYProgress, [0, 0.1, 0.42, 0.52], [0, 1, 1, 0]);
-  // Phase 2 — texte qui apparaît en zoom, progressif et tenu.
-  const zoomScale = useTransform(scrollYProgress, [0.12, 0.5], [0.4, 1.05]);
-  const zoomOpacity = useTransform(scrollYProgress, [0.12, 0.26, 0.46, 0.55], [0, 1, 1, 0]);
-  // Phase 3 — léger zoom avant l'ouverture (on « entre » dans le panneau).
-  const doorScale = useTransform(scrollYProgress, [0.52, 0.6], [1, 1.08]);
-  // Phase 3 — les deux panneaux s'écartent (gauche / droite) et révèlent le blanc.
-  const doorLeftX = useTransform(scrollYProgress, [0.6, 0.84], ["0%", "-101%"]);
-  const doorRightX = useTransform(scrollYProgress, [0.6, 0.84], ["0%", "101%"]);
-  // Le contenu blanc se cale (petit zoom qui se pose) pendant l'ouverture.
-  const revealScale = useTransform(scrollYProgress, [0.6, 0.84], [1.12, 1]);
+  const photoScale = useTransform(scrollYProgress, [0, 0.28], [1.18, 1]);
+  const photoOpacity = useTransform(scrollYProgress, [0, 0.06, 0.26, 0.34], [0, 1, 1, 0]);
+  // Phase 2 — le texte VIENT DE TRÈS LOIN (0.16), se rapproche lentement jusqu'à la
+  // taille lisible (1.1), puis FONCE jusqu'à remplir l'écran (10), tenu, puis
+  // disparaît seulement une fois tout près.
+  const zoomScale = useTransform(scrollYProgress, [0.08, 0.42, 0.66], [0.16, 1.1, 16]);
+  const zoomOpacity = useTransform(scrollYProgress, [0.08, 0.24, 0.6, 0.68], [0, 1, 1, 0]);
+  // Phase 3 — le blanc se cale (petit zoom qui se pose) pendant l'ouverture des blocs.
+  const revealScale = useTransform(scrollYProgress, [0.7, 0.96], [1.1, 1]);
   // Phase 4 — texte sur le blanc.
-  const pinnedOpacity = useTransform(scrollYProgress, [0.7, 0.88], [0, 1]);
-  const pinnedY = useTransform(scrollYProgress, [0.7, 0.88], [40, 0]);
+  const pinnedOpacity = useTransform(scrollYProgress, [0.9, 0.99], [0, 1]);
+  const pinnedY = useTransform(scrollYProgress, [0.9, 0.99], [40, 0]);
 
   // Sans animation : on montre simplement la photo et le texte final, sans scroll-jacking.
   if (reduce) {
@@ -174,7 +186,7 @@ function ScrollShowcase() {
   }
 
   return (
-    <section ref={ref} className="relative h-[440vh] bg-navy">
+    <section ref={ref} className="relative h-[760vh] bg-navy">
       <div className="sticky top-0 flex h-svh items-center justify-center overflow-hidden">
         {/* Plan du fond (révélé quand les panneaux s'ouvrent) : blanc + texte. */}
         <motion.div
@@ -189,16 +201,11 @@ function ScrollShowcase() {
           </motion.p>
         </motion.div>
 
-        {/* Panneau GAUCHE (navy) : couvre la moitié gauche, glisse vers la gauche. */}
-        <motion.div
-          style={{ x: doorLeftX, scale: doorScale }}
-          className="absolute inset-y-0 left-0 z-20 w-1/2 origin-center bg-navy"
-        />
-        {/* Panneau DROIT (navy) : couvre la moitié droite, glisse vers la droite. */}
-        <motion.div
-          style={{ x: doorRightX, scale: doorScale }}
-          className="absolute inset-y-0 right-0 z-20 w-1/2 origin-center bg-navy"
-        />
+        {/* Rideau « blocs » façon kevinkouakou : colonnes navy qui se retirent en
+            décalé (alternées haut/bas) pour révéler le blanc. */}
+        {Array.from({ length: REVEAL_COLS }).map((_, i) => (
+          <RevealColumn key={i} index={i} progress={scrollYProgress} />
+        ))}
 
         {/* Photo d'Ehoud, posée sur les panneaux navy fermés (phase 1). */}
         <motion.img
@@ -208,13 +215,16 @@ function ScrollShowcase() {
           className="absolute bottom-0 z-30 h-[78vh] w-auto object-contain drop-shadow-2xl"
         />
 
-        {/* Texte qui apparaît en zoom par-dessus la photo (phase 2). */}
+        {/* Texte qui vient de loin et se rapproche (phase 2). Wrapper plein écran
+            centré → le zoom part du centre et remplit l'écran proprement. */}
         <motion.div
           style={{ scale: zoomScale, opacity: zoomOpacity }}
-          className="absolute z-40 px-4 text-center font-display uppercase leading-[0.95] text-white text-[clamp(2.5rem,9vw,8rem)]"
+          className="absolute inset-0 z-40 flex items-center justify-center"
         >
-          <span className="block">{a.showcaseZoomA}</span>
-          <span className="block text-[hsl(var(--sky))]">{a.showcaseZoomB}</span>
+          <div className="px-4 text-center font-display uppercase leading-[0.95] text-white text-[clamp(2.5rem,9vw,8rem)]">
+            <span className="block">{a.showcaseZoomA}</span>
+            <span className="block text-[hsl(var(--sky))]">{a.showcaseZoomB}</span>
+          </div>
         </motion.div>
       </div>
     </section>

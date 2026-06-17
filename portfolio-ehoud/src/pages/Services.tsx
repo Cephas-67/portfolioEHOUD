@@ -1,48 +1,163 @@
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { FillButton } from "@/components/FillButton";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { services } from "@/data/services";
+import { PageHero } from "@/components/PageHero";
+import { services, type Service } from "@/data/services";
+import heroImg from "@/assets/hero/pexels-steve-29808916.jpg";
 
-// Page Offre : reprise du pattern « the buzz » de House of Honey.
-// Chaque service est une section plus haute que l'écran. À l'intérieur, un bloc
-// `sticky` plein écran (image + texte) reste épinglé pendant que la page défile,
-// puis se libère quand la section se termine : le service suivant recouvre.
-// 100% CSS sticky, donc aucun calcul au scroll : ça reste fluide avec Lenis.
+// Page Offre : hero image + titre, puis empilement de cartes façon lenis.dev.
+// Chaque carte est `sticky` : au scroll, la suivante monte et se pose par-dessus
+// la précédente, qui se réduit légèrement (profondeur). Plus d'image : chaque
+// carte a sa couleur pleine (charte) + un motif de croix noires qui tournent.
+
+const STACK_OFFSET = 32; // px de décalage vertical entre deux cartes empilées.
+
+// Motif réutilisé : grande croix épaisse, stroke = couleur courante (currentColor),
+// pour pouvoir la teinter via le parent. Inspiré du motif "crosses".
+function Cross({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 130 130" fill="none" aria-hidden="true" className={className}>
+      <path d="M11 11L118.899 119M11.101 119L119 11" stroke="currentColor" strokeWidth={31} />
+    </svg>
+  );
+}
+
+function StackingCard({
+  service,
+  index,
+  total,
+  scrollProgress,
+}: {
+  service: Service;
+  index: number;
+  total: number;
+  scrollProgress: MotionValue<number>;
+}) {
+  const reduce = useReducedMotion();
+
+  // Échelle finale une fois recouverte : plus la carte est profonde, plus elle
+  // rétrécit. La dernière ne rétrécit jamais.
+  const targetScale = 1 - (total - index) * 0.04;
+  const scale = useTransform(scrollProgress, [index / total, 1], [1, targetScale]);
+
+  if (reduce) {
+    return (
+      <div className="mb-6">
+        <Card service={service} index={index} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="pointer-events-none sticky top-0 flex h-svh items-center justify-center">
+      <motion.div style={{ scale, top: `${index * STACK_OFFSET}px` }} className="relative w-full origin-top">
+        <Card service={service} index={index} />
+      </motion.div>
+    </div>
+  );
+}
+
+// Visuel de la carte : couleur pleine + croix tournantes en fond. Deux colonnes :
+// texte éditorial à gauche, affiche réelle d'Ehoud posée à droite. Mêmes dimensions.
+function Card({ service, index }: { service: Service; index: number }) {
+  const { lang } = useLanguage();
+  const reduce = useReducedMotion();
+  const copy = service[lang];
+  const number = String(index + 1).padStart(2, "0");
+  const cta = lang === "fr" ? "Travailler ensemble" : "Work together";
+
+  // Effet des catalogues Space : l'image (légèrement agrandie pour éviter les bords)
+  // glisse en translateY au scroll dans son cadre overflow-hidden. En transform pur,
+  // donc la taille et la mise en page ne bougent pas.
+  const posterRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: posterRef, offset: ["start end", "end start"] });
+  const posterY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+
+  return (
+    <article
+      className="pointer-events-auto relative mx-auto grid h-[72svh] min-h-[460px] w-full max-w-[1200px] grid-cols-1 gap-6 overflow-hidden rounded-[2rem] p-6 shadow-2xl lg:grid-cols-[1fr_minmax(0,42%)] lg:items-stretch lg:gap-10 lg:p-12"
+      style={{ backgroundColor: `hsl(var(${service.bg}))`, color: `hsl(var(${service.text}))` }}
+    >
+      {/* Motif : croix « encre » qui tournent, en fond. Désactivé si reduced-motion. */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden text-[hsl(var(--svc-ink))]">
+        <Cross className="absolute -left-16 -top-16 w-56 opacity-15 animate-spin [animation-duration:9s] motion-reduce:animate-none" />
+        <Cross className="absolute -bottom-12 left-1/4 w-48 opacity-[0.12] animate-spin [animation-duration:11s] motion-reduce:animate-none" />
+      </div>
+
+      {/* Colonne texte. */}
+      <div className="relative z-10 flex min-w-0 flex-col justify-between">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] opacity-80">
+          {number} · {copy.eyebrow}
+        </p>
+
+        <div className="mt-6 lg:mt-0">
+          <h2 className="service-title text-[clamp(2rem,4.5vw,4rem)] uppercase leading-[0.95]">
+            {copy.title}
+          </h2>
+          <p className="mt-5 max-w-md text-base opacity-85 lg:text-lg">{copy.text}</p>
+
+          <FillButton to="/contact" color="hsl(var(--blue))" className="mt-7 h-12 rounded-lg px-6 font-bold">
+            {cta}
+          </FillButton>
+        </div>
+      </div>
+
+      {/* Colonne affiche : visible dès le desktop. Cadre légèrement incliné qui se
+          redresse au survol, ombre portée pour le détacher du fond coloré. */}
+      <figure className="group/poster relative z-10 hidden lg:flex lg:flex-col lg:justify-center">
+        {/* Taille d'avant conservée. Effet Space : l'image glisse au scroll. */}
+        <div
+          ref={posterRef}
+          className="overflow-hidden rounded-xl shadow-2xl ring-1 ring-[hsl(var(--svc-ink))]/10 transition-transform duration-500 ease-out [transform:rotate(-2deg)] group-hover/poster:[transform:rotate(0deg)_scale(1.02)]"
+        >
+          <motion.img
+            src={service.poster}
+            alt={service.posterCaption[lang]}
+            loading="lazy"
+            decoding="async"
+            style={reduce ? undefined : { y: posterY, scale: 1.2 }}
+            className="h-full max-h-[52svh] w-full object-cover"
+          />
+        </div>
+        <figcaption className="mt-3 text-xs uppercase tracking-[0.15em] opacity-70">
+          {service.posterCaption[lang]}
+        </figcaption>
+      </figure>
+    </article>
+  );
+}
+
 export default function Services() {
   const { lang } = useLanguage();
+  const stackRef = useRef<HTMLDivElement>(null);
+  const hero =
+    lang === "fr"
+      ? { eyebrow: "Ce que je propose", title: "L'Offre" }
+      : { eyebrow: "What I offer", title: "Services" };
+
+  const { scrollYProgress } = useScroll({
+    target: stackRef,
+    offset: ["start start", "end end"],
+  });
 
   return (
     <div className="theme-marine bg-theme-bg-primary text-theme-text-primary">
-      {services.map((service, index) => {
-        const copy = service[lang];
-        const number = String(index + 1).padStart(2, "0");
+      {/* Hero image + titre, même format que les autres pages (/a-propos, /portfolio). */}
+      <PageHero image={heroImg} eyebrow={hero.eyebrow} title={hero.title} />
 
-        return (
-          <section key={copy.title} className="relative h-[160vh]">
-            <div className="sticky top-0 flex h-screen items-end overflow-hidden">
-              {/* Grande image du service, plein écran */}
-              <img
-                src={service.src}
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-
-              {/* Voile sombre : garde le texte lisible quelle que soit l'image */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/40" />
-
-              {/* Texte posé sur l'image */}
-              <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 pb-24 lg:px-6 lg:pb-32">
-                <p className="font-display text-sm uppercase tracking-[0.2em] text-white/70">
-                  {number} · {copy.eyebrow}
-                </p>
-                <h2 className="mt-4 max-w-4xl font-display text-5xl uppercase leading-[0.95] text-white md:text-7xl lg:text-8xl">
-                  {copy.title}
-                </h2>
-                <p className="mt-6 max-w-xl text-lg text-white/85">{copy.text}</p>
-              </div>
-            </div>
-          </section>
-        );
-      })}
+      {/* Pile de cartes : une section `sticky` par service. */}
+      <section ref={stackRef} className="relative px-4 pb-24 pt-4 lg:px-6">
+        {services.map((service, index) => (
+          <StackingCard
+            key={service.fr.title}
+            service={service}
+            index={index}
+            total={services.length}
+            scrollProgress={scrollYProgress}
+          />
+        ))}
+      </section>
     </div>
   );
 }

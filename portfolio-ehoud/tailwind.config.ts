@@ -33,10 +33,10 @@ export default {
         },
       },
       fontFamily: {
-        // 3 rôles : Work Sans (corps) · Bristone Display (navbar/footer/labels) · Pinyon (grands titres)
+        // 3 rôles : Work Sans (corps) · Bristone Display (navbar/footer/labels) · Mokgech (grands titres)
         sans: ['"Work Sans"', "ui-sans-serif", "system-ui", "sans-serif"],
         display: ['"Bristone Display LBC"', '"Work Sans"', "sans-serif"],
-        script: ['"Pinyon Script LBC"', "cursive"],
+        script: ['"Mokgech"', "cursive"],
       },
       borderRadius: {
         lg: "var(--radius)",
