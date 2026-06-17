@@ -76,3 +76,43 @@ Journal ouvert : {START_DATE}
 **Fichiers modifiés** :
 
 ---
+
+## 2026-06-16 · Page Studio (/a-propos) : fond navy + portrait détouré centré
+
+**Ce qui a été fait** :
+- Sections bio/déclaration/« ce que je fais » passées de `bg-theme-bg-secondary` (--pale, rendu blanc) à `bg-theme-bg-primary` (--navy), le bleu de Home/Space. Plus aucune zone blanche.
+- Portrait : `ehoud-suit.jpg` (CMYK, sujet collé aux bords) remplacé par `ehoud-suit-centered.png` généré via Pillow (crop sur bbox alpha + marges latérales 13% + respiration 6% en haut). Affiché `object-contain` centré, sans cadre ParallaxImage qui rognait la tête.
+
+**Leçon retenue** : un PNG détouré ne doit PAS passer par un cadre `object-cover` + parallax 119% (rogne le sujet). Le poser `object-contain` sur le fond. Pour « centrer » un détourage, recadrer sur la bbox alpha puis re-padder symétriquement, ne pas se fier au canvas d'origine.
+
+**Fichiers modifiés** : `src/pages/About.tsx`, `src/assets/ehoud-suit-centered.png` (nouveau).
+
+**Reste à faire** : sections image plein-cadre supplémentaires (visuels CV non utilisés) pour coller à la structure exacte du studio HoH — direction visuelle à confirmer.
+
+---
+
+## 2026-06-17 · Studio : 2e photo (PC) + affiches COJAS fraîches + hero confirmé
+
+**Ce qui a été fait** :
+- 2e photo d'Ehoud (au travail, laptop) ajoutée en section image après la déclaration : `ehoud-laptop.webp` (idx 2 du CV, 1400px, ratio 0.71), ParallaxImage contenu max-w 820px.
+- « Ce que je fais » : visuels déjà publiés (boom/taka/social) remplacés par 3 affiches COJAS inutilisées (bleu/magenta/violet = idx 28/29/31). Les rouge/verte (affiche-poster-03/04) étaient déjà sur le site, écartées.
+- Hero `/a-propos` conservé (pexels-steve-29708294.jpg) : le plus dynamique du dossier hero/, et déjà en place comme demandé.
+
+**Méthode dédup affiches** : comparer planche des webp publiés (src/assets/portfolio) vs images extraites du CV, repérer la série COJAS et n'utiliser que les couleurs non publiées.
+
+**Fichiers** : `src/pages/About.tsx`, + `cojas-bleu/magenta/violet.webp`, `ehoud-laptop.webp` (nouveaux).
+
+---
+
+## 2026-06-17 · Studio : section « Notre perspective » (sticky + parallax + filet animé)
+
+**Ce qui a été fait** :
+- Composant `Perspective` dans About.tsx, clone fidèle du bloc studio HoH : image de fond en parallax (motion translateY), bloc texte `sticky top-[18vh]` épinglé dans une section `min-h-[170vh]`, filet `h-px origin-left` qui se dessine en `scaleX` au scroll (useScroll/useTransform).
+- Manifeste original d'Ehoud (4 phrases), nouvelles clés i18n `perspectiveEyebrow`/`perspectiveP1..4` (fr+en). Texte HoH NON repris (droits).
+- Fond : `pexels-steve-29404569.jpg` + voile `bg-navy/70` pour lisibilité.
+
+**Piège résolu (sticky)** : `overflow-hidden` sur l'ANCÊTRE direct d'un élément `sticky` casse l'épinglage relatif au viewport (l'ancêtre devient le conteneur de scroll). Le clipping du parallax doit rester sur le wrapper image (sibling), jamais sur la section qui contient le sticky.
+
+**Fichiers** : `src/pages/About.tsx`, `src/i18n/translations.ts`.
+
+---

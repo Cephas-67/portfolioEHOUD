@@ -129,10 +129,12 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Scrollbars masquées partout + pas de débordement horizontal */
+  /* Pas de débordement horizontal, mais `clip` (pas `hidden`) : `hidden` ferait
+     de body un conteneur de défilement et casserait tout `position: sticky`
+     (header, sections épinglées). `clip` coupe le débordement sans cet effet. */
   html,
   body {
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   * {
     scrollbar-width: none; /* Firefox */

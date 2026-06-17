@@ -48,6 +48,15 @@ export type Translation = {
     studioTitle: string;
     studioText: string;
     studioQuote: string;
+    perspectiveEyebrow: string;
+    perspectiveP1: string;
+    perspectiveP2: string;
+    perspectiveP3: string;
+    perspectiveP4: string;
+    atelierTitle: string;
+    showcaseZoomA: string;
+    showcaseZoomB: string;
+    showcasePinned: string;
     doEyebrow: string;
     do1: string;
     do2: string;
@@ -109,6 +118,15 @@ export const translations: Record<Lang, Translation> = {
       studioText:
         "Le Bleu Créatif, c'est l'atelier d'Ehoud Emmanuel OTI-TOSSOU. Une signature visuelle née d'une conviction simple : une bonne identité raconte quelque chose avant même qu'on la lise.",
       studioQuote: "Le bleu n'est pas qu'une couleur. C'est une manière de voir : claire, franche, qui marque.",
+      perspectiveEyebrow: "Notre perspective",
+      perspectiveP1: "Une bonne identité se lit avant les mots.",
+      perspectiveP2: "On dessine pour la vie réelle des marques, pas pour la galerie.",
+      perspectiveP3: "Le détail n'est pas un luxe : c'est ce qui fait tenir l'ensemble.",
+      perspectiveP4: "Le bleu est notre fil : clair, franc, reconnaissable entre tous.",
+      atelierTitle: "L'atelier, au quotidien",
+      showcaseZoomA: "On ne décore pas.",
+      showcaseZoomB: "On fait parler.",
+      showcasePinned: "Conçu pour être vu, pensé pour rester.",
       doEyebrow: "Ce que je fais",
       do1: "Identité de marque",
       do2: "Affiches & campagnes",
@@ -168,6 +186,15 @@ export const translations: Record<Lang, Translation> = {
       studioText:
         "The Creative Blue is the studio of Ehoud Emmanuel OTI-TOSSOU. A visual signature born from a simple belief: a good identity says something before you even read it.",
       studioQuote: "Blue isn't just a colour. It's a way of seeing: clear, direct, and made to leave a mark.",
+      perspectiveEyebrow: "Our perspective",
+      perspectiveP1: "A good identity reads before the words do.",
+      perspectiveP2: "We design for the real life of brands, not for the gallery.",
+      perspectiveP3: "Detail isn't a luxury: it's what holds the whole thing together.",
+      perspectiveP4: "Blue is our thread: clear, honest, recognisable anywhere.",
+      atelierTitle: "The studio, day to day",
+      showcaseZoomA: "We don't decorate.",
+      showcaseZoomB: "We make it speak.",
+      showcasePinned: "Made to be seen, built to last.",
       doEyebrow: "What I do",
       do1: "Brand identity",
       do2: "Posters & campaigns",
