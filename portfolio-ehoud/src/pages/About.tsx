@@ -2,6 +2,7 @@ import { useRef } from "react";
 import Marquee from "react-fast-marquee";
 import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useDeviceCapabilities } from "@/hooks/useDeviceCapabilities";
 import { PageHero } from "@/components/PageHero";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { Reveal } from "@/components/Reveal";
@@ -152,6 +153,11 @@ function ScrollShowcase() {
   const { t } = useLanguage();
   const a = t.about;
   const reduce = useReducedMotion();
+  const { isMobile, isLowEnd } = useDeviceCapabilities();
+  // Sur mobile / device modeste : la séquence 760vh (scale 16x + rideau + parallax)
+  // est trop lourde et le scroll-jacking gêne le scroll tactile. On sert la version
+  // statique (photo + phrase), garantie fluide.
+  const lightMode = reduce || isMobile || isLowEnd;
   const ref = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -175,7 +181,7 @@ function ScrollShowcase() {
   const pinnedY = useTransform(scrollYProgress, [0.9, 0.99], [40, 0]);
 
   // Sans animation : on montre simplement la photo et le texte final, sans scroll-jacking.
-  if (reduce) {
+  if (lightMode) {
     return (
       <section className="flex min-h-svh flex-col items-center justify-center gap-8 bg-grain px-4 py-24 text-center text-white lg:px-6">
         <img src={ehoudBomber} alt="Ehoud Emmanuel OTI-TOSSOU" className="h-[50vh] w-auto object-contain" />

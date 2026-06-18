@@ -77,6 +77,28 @@ Journal ouvert : {START_DATE}
 
 ---
 
+## 2026-06-18 · Audit perf scroll + réductions mobile (principe amoussouportfolio)
+
+**Contexte** : Maintenance perf générale (mobile + PC), scroll smooth Lenis. Règle voulue : alléger les fonctionnalités CPU-lourdes sur mobile. Lenis = cœur, à garder partout.
+
+**Décision Lenis** : gardé partout. Sa config par défaut ne smooth que la molette (`syncTouch` off) → au tactile le scroll reste natif, donc le monter sur mobile est inoffensif (pas de jank). Pas besoin de le couper. (NB : amoussouportfolio le DÉSACTIVE sur mobile, mais leur Lenis pilote GSAP ScrollTrigger ; ici on est en framer-motion `useScroll` qui lit le scroll réel que Lenis met à jour → rien à synchroniser.)
+
+**Nouveau hook** : `useDeviceCapabilities.ts` (porté/simplifié de la réf) → `{ isTouch, isMobile, isLowEnd, prefersReducedMotion }`. `isLowEnd` = deviceMemory<=4 || cores<4 || (tactile && largeur<=768). Pas de détection WebGL (aucun composant WebGL ici).
+
+**Réductions appliquées** :
+- DotField (Home) : monté seulement si `!isTouch && !isLowEnd && !reduce` (canvas + ~8700 points + setInterval purement curseur → 0 bénéfice tactile). Le `bg-grain` reste visible dessous.
+- InkReveal (Contact) : monté desktop seul. Il n'a AUCUN handler tactile → sur mobile il peignait un navy plein masquant le dégradé sans jamais le révéler. Sans lui, le dégradé bleu s'affiche directement (plus premium).
+- ScrollShowcase (About) : `lightMode = reduce || isMobile || isLowEnd` → version statique (photo + phrase) au lieu de la séquence 760vh (scale 16x + rideau + 6 colonnes), trop lourde et anti-scroll-tactile.
+- ParallaxImage + PageHero : parallax scroll-lié figé sur mobile/reduced (`willChange:transform` ajouté sur desktop).
+
+**Repéré (à traiter plus tard)** : assets lourds qui pèsent sur le LCP : `logodef.svg` 1,8 Mo (probable raster embarqué → vectoriser ou remplacer par PNG/webp optimisé), `pexels-marina-zasorina` 1,26 Mo et `pexels-mart-production` 828 Ko (convertir en webp via sharp, cf. leçon du 2026-06-18 Contact). Bundle JS 571 Ko (179 Ko gzip) : code-split possible si besoin.
+
+**Leçon retenue** : la bonne question mobile n'est pas « couper Lenis » mais « couper ce qui n'a pas de sens sans curseur » (canvas mouse-only) et « couper le scroll-jacking lourd » (séquences pin + gros scale, parallax multi-instances). Un canvas sans handler tactile sur mobile = pire que rien (calcul + rendu masquant). Centraliser la détection device dans un hook unique réutilisable.
+
+**Fichiers** : `src/hooks/useDeviceCapabilities.ts` (nouveau), `src/pages/Home.tsx`, `src/pages/Contact.tsx`, `src/pages/About.tsx`, `src/components/ParallaxImage.tsx`, `src/components/PageHero.tsx`.
+
+---
+
 ## 2026-06-18 · Perf : menu mobile fluide + séquence About + ajustements
 
 **Contexte** : Retours après la généralisation du grain. 4 points : footer SANS grain, jank du menu mobile (ouverture + fermeture), jank de la photo veste dans la séquence scroll About, position horloge Home sur mobile.

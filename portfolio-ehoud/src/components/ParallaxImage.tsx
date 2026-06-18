@@ -1,5 +1,6 @@
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useDeviceCapabilities } from "@/hooks/useDeviceCapabilities";
 import { cn } from "@/lib/utils";
 
 type ParallaxImageProps = {
@@ -13,7 +14,10 @@ type ParallaxImageProps = {
 // descendant) + léger zoom au survol. Reprend le mécanisme du modèle :
 // couche interne 19% plus haute, décalée vers le haut, translateY piloté au scroll.
 export function ParallaxImage({ src, alt, ratio = 0.8, className }: ParallaxImageProps) {
-  const reduce = useReducedMotion();
+  // Sur mobile / reduced-motion : image figée (le parallax scroll-lié est un
+  // déclencheur de jank tactile pour un gain visuel mineur).
+  const { isMobile, prefersReducedMotion } = useDeviceCapabilities();
+  const staticImage = isMobile || prefersReducedMotion;
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -30,7 +34,7 @@ export function ParallaxImage({ src, alt, ratio = 0.8, className }: ParallaxImag
       {/* Couche parallax (translateY au scroll) */}
       <motion.div
         className="absolute inset-x-0 top-[-9.5%] h-[119%]"
-        style={reduce ? undefined : { y }}
+        style={staticImage ? undefined : { y, willChange: "transform" }}
       >
         <img
           src={src}

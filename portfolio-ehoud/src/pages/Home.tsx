@@ -6,6 +6,7 @@ import { Reveal } from "@/components/Reveal";
 import { HeroShowcase } from "@/components/HeroShowcase";
 import { Clock } from "@/components/Clock";
 import { useIntroReady } from "@/components/IntroContext";
+import { useDeviceCapabilities } from "@/hooks/useDeviceCapabilities";
 import DotField from "@/components/DotField";
 import portrait from "@/assets/ehoud-hero.webp";
 
@@ -24,6 +25,9 @@ const SPEED_LINES = [
 export default function Home() {
   const { t } = useLanguage();
   const reduce = useReducedMotion();
+  const { isTouch, isLowEnd } = useDeviceCapabilities();
+  // Le champ de points est purement curseur : inutile (et coûteux) sans souris.
+  const showDotField = !isTouch && !isLowEnd && !reduce;
   const ready = useIntroReady(); // la chorégraphie n'enclenche qu'à la fin du loading
   // Le nom de fond ne démarre qu'après la chorégraphie d'arrivée du portrait.
   const [textRunning, setTextRunning] = useState(!!reduce);
@@ -39,17 +43,19 @@ export default function Home() {
       {/* Fond interactif : champ de points qui réagit au curseur (React Bits).
           `fixed` = la grille ne couvre qu'un écran (perf), mais reste derrière toutes
           les sections au scroll. Le footer (relative z-10) passe par-dessus. */}
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <DotField
-          dotRadius={1.5}
-          dotSpacing={18}
-          cursorRadius={220}
-          bulgeStrength={60}
-          sparkle={false}
-          waveAmplitude={0}
-          glowColor="transparent"
-        />
-      </div>
+      {showDotField && (
+        <div className="pointer-events-none fixed inset-0 z-0">
+          <DotField
+            dotRadius={1.5}
+            dotSpacing={18}
+            cursorRadius={220}
+            bulgeStrength={60}
+            sparkle={false}
+            waveAmplitude={0}
+            glowColor="transparent"
+          />
+        </div>
+      )}
 
       <section className="relative z-10 flex min-h-[calc(100vh-5rem)] items-center overflow-hidden">
         {/* Nom complet qui défile en fond, H1, Bristone Hollow, même vitesse que SPACE (speed 80) */}

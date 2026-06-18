@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useDeviceCapabilities } from "@/hooks/useDeviceCapabilities";
 
 // Hero de page réutilisable, identique au hero SPACE : image de fond avec
 // parallax subtil (≈80px), teinte navy, sous-titre centré, et grand marquee
@@ -14,7 +15,8 @@ type PageHeroProps = {
 };
 
 export function PageHero({ image, eyebrow, title }: PageHeroProps) {
-  const reduce = useReducedMotion();
+  const { isMobile, prefersReducedMotion } = useDeviceCapabilities();
+  const staticImage = isMobile || prefersReducedMotion;
   const ref = useRef<HTMLDivElement>(null);
   // Tant que l'image de fond n'est pas chargée, on garde le texte caché : sinon, à la
   // première visite d'une page, on verrait le gros marquee blanc sur le fond navy nu
@@ -35,7 +37,7 @@ export function PageHero({ image, eyebrow, title }: PageHeroProps) {
     >
       {/* Couche parallax : l'image déborde de PARALLAX px en haut/bas. */}
       <div className="absolute inset-0 -z-2 overflow-hidden">
-        <motion.div className="absolute inset-x-0 -inset-y-20" style={reduce ? undefined : { y }}>
+        <motion.div className="absolute inset-x-0 -inset-y-20" style={staticImage ? undefined : { y, willChange: "transform" }}>
           <img
             src={image}
             alt=""
