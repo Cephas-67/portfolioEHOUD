@@ -35,7 +35,7 @@ export default function Home() {
   }, [reduce, ready]);
 
   return (
-    <div className="theme-marine relative bg-theme-bg-primary text-theme-text-primary">
+    <div className="theme-marine relative bg-grain text-theme-text-primary">
       {/* Fond interactif : champ de points qui réagit au curseur (React Bits).
           `fixed` = la grille ne couvre qu'un écran (perf), mais reste derrière toutes
           les sections au scroll. Le footer (relative z-10) passe par-dessus. */}
@@ -73,7 +73,7 @@ export default function Home() {
           {/* Sort d'une fente et monte vers sa place : un masque overflow-hidden
               (la fente) + l'horloge qui remonte depuis le bas (y 100% → 0).
               Chorégraphie : navbar (0.2) → logo (1.1) → horloge (1.5) → photo (2.2). */}
-          <div className="-translate-x-28 -translate-y-6 overflow-hidden md:-translate-x-[170px] md:-translate-y-10">
+          <div className="-translate-x-36 -translate-y-1 overflow-hidden md:-translate-x-[170px] md:-translate-y-10">
             <motion.div
               initial={reduce ? false : { y: "100%" }}
               animate={reduce ? undefined : ready ? { y: 0 } : { y: "100%" }}

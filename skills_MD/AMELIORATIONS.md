@@ -77,6 +77,43 @@ Journal ouvert : {START_DATE}
 
 ---
 
+## 2026-06-18 · Perf : menu mobile fluide + séquence About + ajustements
+
+**Contexte** : Retours après la généralisation du grain. 4 points : footer SANS grain, jank du menu mobile (ouverture + fermeture), jank de la photo veste dans la séquence scroll About, position horloge Home sur mobile.
+
+**Ce qui a été fait** :
+- Footer : grain retiré (revert `bg-grain` → `bg-theme-bg-primary`). Les footers n'en veulent pas.
+- Menu mobile (`MobileMenu.tsx`) : (1) jank d'ouverture causé par `.grain-overlay` en `mix-blend-mode: overlay` qui se recompose à chaque frame pendant l'anim `clipPath` → voile supprimé (le `bg-grain` cuit suffit). (2) La fermeture par cercle ne se voyait pas : le wrapper extérieur faisait un fade opacity 0.2s qui masquait le cercle (0.65s) + un `delay: 0.45` retardait la fermeture → wrapper gardé opaque (`exit` opacity duration 0.01 delay 0.55) et cercle fermé sans délai (0.55s). Clic sur un lien = même cercle qui se referme au coin d'origine. `will-change: clip-path` ajouté.
+- Séquence About (`ScrollShowcase`) : la photo veste « grattait » à cause de `drop-shadow-2xl` (filter) re-rasterisée à chaque frame pendant le `scale`. Fix : couche GPU dédiée via `[will-change:transform] [backface-visibility:hidden]` sur la photo, le texte zoom (scale 16x), le plan blanc et les 6 `RevealColumn`. `decoding="async"` sur la photo. (NB : `transform-gpu` Tailwind inutilisable ici, framer écrit `transform` inline et l'écrase → passer par `will-change` brut.)
+- Horloge Home mobile : `-translate-x-28 -translate-y-6` → `-translate-x-36 -translate-y-1` (plus à gauche, plus bas). Desktop `md:` inchangé.
+
+**Leçon retenue** : 2 pièges perf récurrents sur ce projet — (a) `mix-blend-mode` + animation simultanée = recompositing par frame, à éviter pendant toute transition ; (b) `filter: drop-shadow` sur un élément `scale`-animé = re-rasterisation par frame, fixer en promouvant l'élément sur sa propre couche GPU (`will-change:transform`). Avec framer-motion, ne pas compter sur `transform-gpu` (Tailwind) : framer pose `transform` inline, utiliser `will-change` brut.
+
+**Fichiers modifiés** : `src/components/layout/Footer.tsx`, `src/components/layout/MobileMenu.tsx`, `src/pages/About.tsx`, `src/pages/Home.tsx`.
+
+---
+
+## 2026-06-18 · Grain premium généralisé sur toutes les surfaces bleues
+
+**Contexte** : Objectif Awwwards. Etat hétérogène du grain : certaines pages l'avaient (`bg-grain`), d'autres à moitié (sections internes en `bg-navy` nu), d'autres pas du tout. Veut le grain sur toute page au fond bleu uni (les pages « comme Home »). Référence : E:\Amoussouportfolio applique `.bg-grain` partout par défaut (utility identique à celle déjà ici).
+
+**Deux utilities de grain** :
+- `.bg-grain` = navy + bruit SVG cuit (alpha 0.30). A utiliser sur surface navy plate.
+- `.grain-overlay` = voile transparent `mix-blend-overlay`. A utiliser quand la couleur n'est pas navy (thèmes blue/sky/pale) ou par-dessus un fond non remplaçable.
+
+**Ce qui a été fait** :
+- Home : root `bg-theme-bg-primary` → `bg-grain` (le DotField, canvas transparent, reste par-dessus, grain visible entre les points).
+- About : conteneur scroll `h-[760vh]` + fallback reduced-motion passés `bg-navy` → `bg-grain`. Les `RevealColumn` laissées en `bg-navy` nu (le grain s'y carrellerait avec coutures visibles entre colonnes).
+- Layout : root + overlay de transition `bg-theme-bg-primary` → `bg-grain` (grain pendant les transitions, pas de flash navy plat).
+- Footer (présent partout) → `bg-grain`.
+- `Section` : nouveau prop `grain` qui pose un `grain-overlay` + passe le contenu en `relative z-[1]`. Activé sur Entrepreneuriat (theme blue) et NotFound (theme marine).
+
+**Leçon retenue** : le grain cuit (`bg-grain`) ne marche QUE sur navy (couleur hardcodée dans le SVG). Pour grainer une surface d'une autre couleur, utiliser le voile `grain-overlay` (blend overlay, couleur-agnostique). NE PAS poser `bg-grain` sur des colonnes/tuiles juxtaposées : le `background-size: 220px` se réinitialise par élément → coutures.
+
+**Fichiers modifiés** : `src/pages/Home.tsx`, `src/pages/About.tsx`, `src/components/layout/Section.tsx`, `src/components/layout/Layout.tsx`, `src/components/layout/Footer.tsx`, `src/pages/Entrepreneuriat.tsx`, `src/pages/NotFound.tsx`.
+
+---
+
 ## 2026-06-18 · Mobile-first : menu mobile (trou) + base grain premium
 
 **Contexte** : Objectif portfolio premium « Awwwards ». Etape 1 demandee : mobile-first, en commencant par un menu mobile au style de simeonamoussou.com.

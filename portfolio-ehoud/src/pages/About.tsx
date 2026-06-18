@@ -140,7 +140,7 @@ function RevealColumn({ index, progress }: { index: number; progress: MotionValu
   return (
     <motion.div
       style={{ y, left: `${(index / REVEAL_COLS) * 100}%`, width: `calc(${100 / REVEAL_COLS}% + 1px)` }}
-      className="absolute top-0 z-20 h-full bg-navy"
+      className="absolute top-0 z-20 h-full bg-navy [backface-visibility:hidden] [will-change:transform]"
     />
   );
 }
@@ -177,7 +177,7 @@ function ScrollShowcase() {
   // Sans animation : on montre simplement la photo et le texte final, sans scroll-jacking.
   if (reduce) {
     return (
-      <section className="flex min-h-svh flex-col items-center justify-center gap-8 bg-navy px-4 py-24 text-center text-white lg:px-6">
+      <section className="flex min-h-svh flex-col items-center justify-center gap-8 bg-grain px-4 py-24 text-center text-white lg:px-6">
         <img src={ehoudBomber} alt="Ehoud Emmanuel OTI-TOSSOU" className="h-[50vh] w-auto object-contain" />
         <p className="font-display text-[clamp(1.5rem,4vw,3rem)] uppercase leading-tight">
           {a.showcaseZoomA} {a.showcaseZoomB}
@@ -187,12 +187,12 @@ function ScrollShowcase() {
   }
 
   return (
-    <section ref={ref} className="relative h-[760vh] bg-navy">
+    <section ref={ref} className="relative h-[760vh] bg-grain">
       <div className="sticky top-0 flex h-svh items-center justify-center overflow-hidden">
         {/* Plan du fond (révélé quand les panneaux s'ouvrent) : blanc + texte. */}
         <motion.div
           style={{ scale: revealScale }}
-          className="absolute inset-0 z-0 flex items-center justify-center bg-white"
+          className="absolute inset-0 z-0 flex items-center justify-center bg-white [backface-visibility:hidden] [will-change:transform]"
         >
           <motion.p
             style={{ opacity: pinnedOpacity, y: pinnedY }}
@@ -212,15 +212,18 @@ function ScrollShowcase() {
         <motion.img
           src={ehoudBomber}
           alt="Ehoud Emmanuel OTI-TOSSOU"
+          decoding="async"
           style={{ scale: photoScale, opacity: photoOpacity }}
-          className="absolute bottom-0 z-30 h-[78vh] w-auto object-contain drop-shadow-2xl"
+          // Couche GPU dédiée : la `drop-shadow` (filter) est rasterisée une seule
+          // fois puis la couche est juste transformée → plus de re-paint par frame.
+          className="absolute bottom-0 z-30 h-[78vh] w-auto object-contain drop-shadow-2xl [backface-visibility:hidden] [will-change:transform]"
         />
 
         {/* Texte qui vient de loin et se rapproche (phase 2). Wrapper plein écran
             centré → le zoom part du centre et remplit l'écran proprement. */}
         <motion.div
           style={{ scale: zoomScale, opacity: zoomOpacity }}
-          className="absolute inset-0 z-40 flex items-center justify-center"
+          className="absolute inset-0 z-40 flex items-center justify-center [backface-visibility:hidden] [will-change:transform]"
         >
           <div className="px-4 text-center font-display uppercase leading-[0.95] text-white text-[clamp(2.5rem,9vw,8rem)]">
             <span className="block">{a.showcaseZoomA}</span>

@@ -50,26 +50,29 @@ export function MobileMenu({
       {open && (
         <motion.div
           key="mobile-drawer"
+          // Le wrapper reste opaque pendant toute la fermeture : c'est le cercle
+          // (clipPath) qui « efface » le menu. On retarde juste le démontage pour
+          // laisser le cercle se refermer entièrement.
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          // Fermeture rapide (0.2s) : le menu disparaît vite pour laisser voir la
-          // montée de la page au clic d'un lien (pas l'exit lent du modèle).
-          exit={{ opacity: 0, transition: { duration: 0.2 } }}
-          transition={{ duration: 0.25 }}
+          exit={{ opacity: 0, transition: { duration: 0.01, delay: 0.55 } }}
+          transition={{ duration: 0.2 }}
           className="fixed inset-0 z-50 p-3 lg:hidden"
         >
-          {/* Tapis qui se deroule en cercle depuis le coin haut-droit. */}
+          {/* Tapis qui se déroule en cercle depuis le coin haut-droit (origine du
+              bouton « menu ») ; à la fermeture il se referme exactement au même
+              point, sans délai → réponse immédiate au clic. */}
           <motion.div
             initial={{ clipPath: "circle(0% at calc(100% - 2rem) 2rem)" }}
             animate={{ clipPath: "circle(150% at calc(100% - 2rem) 2rem)" }}
             exit={{
               clipPath: "circle(0% at calc(100% - 2rem) 2rem)",
-              transition: { duration: 0.65, ease: EASE, delay: 0.45 },
+              transition: { duration: 0.55, ease: EASE },
             }}
-            transition={{ duration: 0.65, ease: EASE }}
+            transition={{ duration: 0.55, ease: EASE }}
+            style={{ willChange: "clip-path" }}
             className="bg-grain relative flex h-full w-full flex-col overflow-hidden rounded-[28px] p-5 text-white shadow-2xl"
           >
-            <div className="grain-overlay" aria-hidden />
 
             {/* Contenu : fade-in apres le deroule du tapis. */}
             <motion.div

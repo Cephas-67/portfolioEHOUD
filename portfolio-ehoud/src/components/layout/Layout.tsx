@@ -38,7 +38,7 @@ export function Layout() {
   }, [location.key]);
 
   return (
-    <div className="theme-marine min-h-screen bg-theme-bg-primary">
+    <div className="theme-marine min-h-screen bg-grain">
       <Header />
       {/* min-h-screen : même quand l'ancienne page se retire, `main` ne s'effondre
           pas, donc le footer reste sous la ligne de flottaison (jamais visible
@@ -53,7 +53,7 @@ export function Layout() {
             className={
               settled
                 ? "relative z-0"
-                : "fixed inset-0 z-20 overflow-hidden bg-theme-bg-primary"
+                : "fixed inset-0 z-20 overflow-hidden bg-grain"
             }
             initial={settled ? false : { y: "100%" }}
             animate={{ y: 0 }}
