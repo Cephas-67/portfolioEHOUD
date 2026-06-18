@@ -2,37 +2,35 @@ import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/i18n/LanguageContext";
 import InkReveal from "@/components/InkReveal";
-import { Section } from "@/components/layout/Section";
 import { ContactForm } from "@/components/ContactForm";
-import portrait from "@/assets/ehoud-bomber.jpg";
 
 export default function Contact() {
   const { t } = useLanguage();
 
   return (
-    <div className="theme-marine bg-theme-bg-primary text-theme-text-primary">
-      {/* Hero « encre » : le portrait est caché sous un calque navy que la souris
-          révèle en taches d'encre (effet InkReveal). Le titre reste au-dessus du
-          calque (z-2, non interactif) pour rester lisible. Hauteur < 100vh pour
-          laisser deviner le formulaire en dessous. */}
+    <div className="theme-marine bg-grain text-theme-text-primary">
+      {/* Hero « encre » : sous un calque navy, un degrade de bleus (sky -> blue ->
+          logo). La souris creuse des taches d'encre qui revelent ces bleus (pas de
+          photo). Le titre reste au-dessus du calque (z-2). Hauteur < 100vh pour
+          laisser deviner le formulaire dessous. */}
       <section className="relative min-h-[88svh] overflow-hidden bg-navy">
-        <img
-          src={portrait}
-          alt="Ehoud Emmanuel OTI-TOSSOU"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+        {/* Fond revele : degrade 100 % bleu de la charte. */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sky))] via-[hsl(var(--blue))] to-[hsl(var(--logo))]" />
 
+        {/* Calque navy + revelation a l'encre au passage du curseur. */}
         <InkReveal maskColor={[23, 56, 97]} brushSize={150} />
 
-        <div className="pointer-events-none absolute inset-0 z-[2] flex select-none flex-col items-center justify-center px-4 text-center text-white [text-shadow:0_2px_28px_rgba(0,0,0,0.55)]">
+        {/* Deux petits carres accent (rappel de la marque). */}
+        <span className="pointer-events-none absolute left-1/2 top-16 z-[2] h-2 w-2 -translate-x-1/2 bg-logo" />
+        <span className="pointer-events-none absolute bottom-16 left-1/2 z-[2] h-2 w-2 -translate-x-1/2 bg-logo" />
 
-          <h1 className="mt-4 font-script leading-none text-[clamp(3rem,9vw,8rem)]">
+        <div className="pointer-events-none absolute inset-0 z-[2] flex select-none items-center justify-center px-4 text-center">
+          <h1 className="font-script leading-none text-white text-[clamp(3rem,9vw,8rem)] [text-shadow:0_2px_28px_rgba(0,0,0,0.45)]">
             {t.contact.heroTitle}
           </h1>
-
         </div>
 
-        {/* Repère de scroll vers le formulaire. */}
+        {/* Repere de scroll vers le formulaire. */}
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-6 z-[2] flex justify-center text-white/70"
@@ -43,10 +41,9 @@ export default function Contact() {
         </motion.div>
       </section>
 
-      {/* Formulaire (façon Dear Honey), deux modes : Travaillons / Feedback. */}
-      <Section theme="marine">
-        <ContactForm />
-      </Section>
+      {/* Formulaire repris du modele HoH/dear-honey : bloc deux colonnes (titre navy
+          a gauche, panneau pale + champs a droite). */}
+      <ContactForm />
     </div>
   );
 }

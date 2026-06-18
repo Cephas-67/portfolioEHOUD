@@ -55,8 +55,8 @@ export function PageHero({ image, eyebrow, title }: PageHeroProps) {
         <p className="max-w-md text-center text-base uppercase tracking-[0.2em] sm:text-lg">{eyebrow}</p>
       </div>
 
-      {/* Grand marquee ancré en bas, même style que SPACE/Home. */}
-      <div className={`pointer-events-none absolute inset-x-0 bottom-[8%] -z-1 ${fade}`}>
+      {/* Grand marquee : remonté sur mobile (sinon trop bas), ancré bas en desktop. */}
+      <div className={`pointer-events-none absolute inset-x-0 bottom-[22%] -z-1 md:bottom-[8%] ${fade}`}>
         <Marquee speed={80} gradient={false} autoFill>
           <span className="hero-name mx-12 transform-gpu font-bold uppercase leading-none text-white/60 [will-change:transform] text-[clamp(7rem,22vw,18rem)]">
             {title}

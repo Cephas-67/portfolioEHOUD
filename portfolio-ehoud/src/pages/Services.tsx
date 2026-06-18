@@ -51,7 +51,10 @@ function StackingCard({
 
   return (
     <div className="pointer-events-none sticky top-0 flex h-svh items-center justify-center">
-      <motion.div style={{ scale, top: `${index * STACK_OFFSET}px` }} className="relative w-full origin-top">
+      <motion.div
+        style={{ scale, top: `${index * STACK_OFFSET}px` }}
+        className="relative w-full origin-top transform-gpu will-change-transform [backface-visibility:hidden]"
+      >
         <Card service={service} index={index} />
       </motion.div>
     </div>
@@ -62,27 +65,21 @@ function StackingCard({
 // texte éditorial à gauche, affiche réelle d'Ehoud posée à droite. Mêmes dimensions.
 function Card({ service, index }: { service: Service; index: number }) {
   const { lang } = useLanguage();
-  const reduce = useReducedMotion();
   const copy = service[lang];
   const number = String(index + 1).padStart(2, "0");
   const cta = lang === "fr" ? "Travailler ensemble" : "Work together";
 
-  // Effet des catalogues Space : l'image (légèrement agrandie pour éviter les bords)
-  // glisse en translateY au scroll dans son cadre overflow-hidden. En transform pur,
-  // donc la taille et la mise en page ne bougent pas.
-  const posterRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: posterRef, offset: ["start end", "end start"] });
-  const posterY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
-
   return (
     <article
-      className="pointer-events-auto relative mx-auto grid h-[72svh] min-h-[460px] w-full max-w-[1200px] grid-cols-1 gap-6 overflow-hidden rounded-[2rem] p-6 shadow-2xl lg:grid-cols-[1fr_minmax(0,42%)] lg:items-stretch lg:gap-10 lg:p-12"
+      className="pointer-events-auto relative mx-auto grid min-h-[72svh] w-full max-w-[1200px] grid-cols-1 gap-5 overflow-hidden rounded-[2rem] p-6 shadow-2xl lg:h-[72svh] lg:min-h-[460px] lg:grid-cols-[1fr_minmax(0,42%)] lg:items-stretch lg:gap-10 lg:p-12"
       style={{ backgroundColor: `hsl(var(${service.bg}))`, color: `hsl(var(${service.text}))` }}
     >
-      {/* Motif : croix « encre » qui tournent, en fond. Désactivé si reduced-motion. */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden text-[hsl(var(--svc-ink))]">
-        <Cross className="absolute -left-16 -top-16 w-56 opacity-15 animate-spin [animation-duration:9s] motion-reduce:animate-none" />
-        <Cross className="absolute -bottom-12 left-1/4 w-48 opacity-[0.12] animate-spin [animation-duration:11s] motion-reduce:animate-none" />
+      {/* Motif : croix « encre » qui tournent, en fond. Couleur = celle du texte de
+          la carte (currentColor) pour rester visible sur fond clair comme foncé.
+          GPU-promues (will-change) pour que la rotation reste sur le compositor. */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <Cross className="absolute -left-16 -top-16 w-56 opacity-[0.12] animate-spin [animation-duration:9s] will-change-transform motion-reduce:animate-none" />
+        <Cross className="absolute -bottom-12 left-1/4 w-48 opacity-10 animate-spin [animation-duration:11s] will-change-transform motion-reduce:animate-none" />
       </div>
 
       {/* Colonne texte. */}
@@ -105,19 +102,17 @@ function Card({ service, index }: { service: Service; index: number }) {
 
       {/* Colonne affiche : visible dès le desktop. Cadre légèrement incliné qui se
           redresse au survol, ombre portée pour le détacher du fond coloré. */}
-      <figure className="group/poster relative z-10 hidden lg:flex lg:flex-col lg:justify-center">
+      <figure className="group/poster relative z-10 flex flex-col justify-center lg:justify-center">
         {/* Taille d'avant conservée. Effet Space : l'image glisse au scroll. */}
         <div
-          ref={posterRef}
           className="overflow-hidden rounded-xl shadow-2xl ring-1 ring-[hsl(var(--svc-ink))]/10 transition-transform duration-500 ease-out [transform:rotate(-2deg)] group-hover/poster:[transform:rotate(0deg)_scale(1.02)]"
         >
-          <motion.img
+          <img
             src={service.poster}
             alt={service.posterCaption[lang]}
             loading="lazy"
             decoding="async"
-            style={reduce ? undefined : { y: posterY, scale: 1.2 }}
-            className="h-full max-h-[52svh] w-full object-cover"
+            className="h-full max-h-[30svh] w-full object-cover lg:max-h-[52svh]"
           />
         </div>
         <figcaption className="mt-3 text-xs uppercase tracking-[0.15em] opacity-70">
@@ -142,7 +137,7 @@ export default function Services() {
   });
 
   return (
-    <div className="theme-marine bg-theme-bg-primary text-theme-text-primary">
+    <div className="theme-marine bg-grain text-theme-text-primary">
       {/* Hero image + titre, même format que les autres pages (/a-propos, /portfolio). */}
       <PageHero image={heroImg} eyebrow={hero.eyebrow} title={hero.title} />
 

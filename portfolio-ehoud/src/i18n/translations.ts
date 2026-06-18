@@ -55,6 +55,10 @@ export type Translation = {
     workIntro: string;
     feedbackHeading: string;
     feedbackIntro: string;
+    panelToFeedbackTitle: string;
+    panelToFeedbackText: string;
+    panelToWorkTitle: string;
+    panelToWorkText: string;
     name: string;
     namePh: string;
     email: string;
@@ -67,6 +71,9 @@ export type Translation = {
     errEmail: string;
     errMessage: string;
     success: string;
+    sent: string;
+    sentHint: string;
+    sendAnother: string;
   };
   about: {
     heroEyebrow: string;
@@ -192,6 +199,10 @@ export const translations: Record<Lang, Translation> = {
       feedbackHeading: "Votre retour compte",
       feedbackIntro:
         "Un avis sur mon travail, une remarque, une suggestion ? Cet espace est à vous.",
+      panelToFeedbackTitle: "Une remarque à partager ?",
+      panelToFeedbackText: "Passez en mode feedback et dites-moi tout.",
+      panelToWorkTitle: "Un projet en tête ?",
+      panelToWorkText: "Revenez parler de votre projet ensemble.",
       name: "Votre nom",
       namePh: "Comment vous appelez-vous ?",
       email: "Votre email",
@@ -204,6 +215,9 @@ export const translations: Record<Lang, Translation> = {
       errEmail: "Adresse email invalide.",
       errMessage: "Votre message est un peu court (10 caractères minimum).",
       success: "Merci ! Votre messagerie s'ouvre pour envoyer le message.",
+      sent: "Message envoyé !",
+      sentHint: "Merci, je reviens vers vous très vite.",
+      sendAnother: "Envoyer un autre message",
     },
     about: {
       heroEyebrow: "Designer graphique · Social Media Manager",
@@ -218,7 +232,7 @@ export const translations: Record<Lang, Translation> = {
       studioText:
         "Le Bleu Créatif, c'est l'atelier d'Ehoud Emmanuel OTI-TOSSOU. Une signature visuelle née d'une conviction simple : une bonne identité raconte quelque chose avant même qu'on la lise.",
       studioQuote: "Le bleu n'est pas qu'une couleur. C'est une manière de voir : claire, franche, qui marque.",
-      perspectiveEyebrow: "Notre perspective",
+      perspectiveEyebrow: "Ma perspective",
       perspectiveP1: "Une bonne identité se lit avant les mots.",
       perspectiveP2: "On dessine pour la vie réelle des marques, pas pour la galerie.",
       perspectiveP3: "Le détail n'est pas un luxe : c'est ce qui fait tenir l'ensemble.",
@@ -329,6 +343,10 @@ export const translations: Record<Lang, Translation> = {
         "An idea, a brand to launch, a visual to create? Tell me more, I'll get back to you quickly.",
       feedbackHeading: "Your feedback matters",
       feedbackIntro: "Thoughts on my work, a remark, a suggestion? This space is yours.",
+      panelToFeedbackTitle: "Something to share?",
+      panelToFeedbackText: "Switch to feedback mode and tell me all about it.",
+      panelToWorkTitle: "Got a project in mind?",
+      panelToWorkText: "Come back to talk about your project together.",
       name: "Your name",
       namePh: "What's your name?",
       email: "Your email",
@@ -341,6 +359,9 @@ export const translations: Record<Lang, Translation> = {
       errEmail: "Invalid email address.",
       errMessage: "Your message is a bit short (min 10 characters).",
       success: "Thanks! Your mail app is opening to send the message.",
+      sent: "Message sent!",
+      sentHint: "Thank you, I'll get back to you very soon.",
+      sendAnother: "Send another message",
     },
     about: {
       heroEyebrow: "Graphic Designer · Social Media Manager",
@@ -355,7 +376,7 @@ export const translations: Record<Lang, Translation> = {
       studioText:
         "The Creative Blue is the studio of Ehoud Emmanuel OTI-TOSSOU. A visual signature born from a simple belief: a good identity says something before you even read it.",
       studioQuote: "Blue isn't just a colour. It's a way of seeing: clear, direct, and made to leave a mark.",
-      perspectiveEyebrow: "Our perspective",
+      perspectiveEyebrow: "My perspective",
       perspectiveP1: "A good identity reads before the words do.",
       perspectiveP2: "We design for the real life of brands, not for the gallery.",
       perspectiveP3: "Detail isn't a luxury: it's what holds the whole thing together.",

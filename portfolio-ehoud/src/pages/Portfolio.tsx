@@ -214,7 +214,7 @@ export default function Portfolio() {
   const open = setActive;
 
   return (
-    <div className="theme-marine bg-theme-bg-primary text-theme-text-primary">
+    <div className="theme-marine bg-grain text-theme-text-primary">
       {/* Hero plein écran qui se referme par le bas au scroll (effet HoHoney) */}
       <SpaceHero />
 

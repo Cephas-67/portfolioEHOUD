@@ -73,7 +73,7 @@ export default function Home() {
           {/* Sort d'une fente et monte vers sa place : un masque overflow-hidden
               (la fente) + l'horloge qui remonte depuis le bas (y 100% → 0).
               Chorégraphie : navbar (0.2) → logo (1.1) → horloge (1.5) → photo (2.2). */}
-          <div className="-translate-x-[170px] -translate-y-10 overflow-hidden">
+          <div className="-translate-x-28 -translate-y-6 overflow-hidden md:-translate-x-[170px] md:-translate-y-10">
             <motion.div
               initial={reduce ? false : { y: "100%" }}
               animate={reduce ? undefined : ready ? { y: 0 } : { y: "100%" }}
@@ -86,8 +86,8 @@ export default function Home() {
 
         {/* Portrait détouré, au-dessus du nom. Il arrive de la droite à vitesse
             fluide, avec des lignes de vitesse derrière, puis se pose. */}
-        <div className="relative z-10 mx-auto flex w-full max-w-[1400px] justify-center px-4 md:justify-end lg:px-6">
-          <div className="relative w-[min(80%,460px)] md:mr-[18px]">
+        <div className="relative z-10 mx-auto flex w-full max-w-[1400px] justify-end px-4 lg:px-6">
+          <div className="relative w-[min(80%,460px)] translate-x-3 md:translate-x-0 md:mr-[18px]">
             {/* Lignes de vitesse (« effet sonic ») derrière le portrait. */}
             {!reduce &&
               SPEED_LINES.map((line, i) => (

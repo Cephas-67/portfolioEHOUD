@@ -30,8 +30,8 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    bg: "--blue",
-    text: "--white",
+    bg: "--svc-identity",
+    text: "--navy",
     poster: identityPoster,
     posterCaption: { fr: "Le Bleu Créatif · logotype", en: "Le Bleu Créatif · logotype" },
     fr: {
@@ -46,7 +46,7 @@ export const services: Service[] = [
     },
   },
   {
-    bg: "--logo",
+    bg: "--svc-campaign",
     text: "--white",
     poster: campaignPoster,
     posterCaption: { fr: "LAUDOS Slam · campagne 2026", en: "LAUDOS Slam · 2026 campaign" },
@@ -62,7 +62,7 @@ export const services: Service[] = [
     },
   },
   {
-    bg: "--sky",
+    bg: "--svc-social",
     text: "--navy",
     poster: socialPoster,
     posterCaption: { fr: "Boom Events · post social", en: "Boom Events · social post" },
@@ -78,8 +78,8 @@ export const services: Service[] = [
     },
   },
   {
-    bg: "--svc-teal",
-    text: "--navy",
+    bg: "--svc-print",
+    text: "--white",
     poster: printPoster,
     posterCaption: { fr: "Initiative Kaléidoscope · textile", en: "Kaléidoscope Initiative · apparel" },
     fr: {
@@ -94,7 +94,7 @@ export const services: Service[] = [
     },
   },
   {
-    bg: "--svc-indigo",
+    bg: "--svc-event",
     text: "--white",
     poster: eventPoster,
     posterCaption: { fr: "COJAS-Bénin · Assemblée Générale", en: "COJAS-Bénin · General Assembly" },
@@ -110,8 +110,8 @@ export const services: Service[] = [
     },
   },
   {
-    bg: "--pale",
-    text: "--navy",
+    bg: "--svc-art",
+    text: "--white",
     poster: artPoster,
     posterCaption: { fr: "Journée de la Sage-Femme", en: "Midwife's Day" },
     fr: {

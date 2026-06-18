@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { NavLinkPill } from "./NavLinkPill";
+import { MobileMenu } from "./MobileMenu";
 import { FillButton } from "@/components/FillButton";
 import { useIntroReady } from "@/components/IntroContext";
 import logo from "@/assets/logo-mark.png";
@@ -13,6 +15,7 @@ export function Header() {
   const { t, lang, toggle } = useLanguage();
   const reduce = useReducedMotion();
   const ready = useIntroReady(); // la chorégraphie n'enclenche qu'à la fin du loading
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Ordre : Studio (à propos) -> Space (portfolio) -> Offre (services) -> le reste.
   // Entrepreneuriat retiré de la nav.
@@ -66,8 +69,8 @@ export function Header() {
           ))}
         </motion.nav>
 
-        {/* Groupe d'actions repoussé tout à droite, par-dessus la photo */}
-        <motion.div className="ml-auto flex shrink-0 items-center gap-3" {...fromTop(0.35)}>
+        {/* Groupe d'actions desktop, repoussé tout à droite. Masqué sur mobile. */}
+        <motion.div className="ml-auto hidden shrink-0 items-center gap-3 lg:flex" {...fromTop(0.35)}>
           {/* Bascule de langue */}
           <button
             onClick={toggle}
@@ -83,7 +86,20 @@ export function Header() {
             {t.nav.contact}
           </FillButton>
         </motion.div>
+
+        {/* Déclencheur « menu » (texte, plus d'icône) : mobile/tablette seulement. */}
+        <motion.button
+          onClick={() => setMenuOpen(true)}
+          aria-label="Ouvrir le menu"
+          className="ml-auto flex h-11 shrink-0 items-center rounded-full bg-theme-bg-secondary px-5 font-display text-sm uppercase tracking-wide text-theme-text-secondary transition-colors hover:bg-theme-accent hover:text-theme-bg-primary lg:hidden"
+          {...fromTop(0.35)}
+        >
+          menu
+        </motion.button>
       </div>
+
+      {/* Overlay plein écran (mobile/tablette). */}
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} links={links} />
     </header>
   );
 }

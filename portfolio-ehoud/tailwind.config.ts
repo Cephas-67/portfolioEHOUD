@@ -22,6 +22,7 @@ export default {
         navy: "hsl(var(--navy))",
         sky: "hsl(var(--sky))",
         blue: "hsl(var(--blue))",
+        logo: "hsl(var(--logo))",
         pale: "hsl(var(--pale))",
         // Rôles thématiques par section (système hérité du modèle)
         theme: {

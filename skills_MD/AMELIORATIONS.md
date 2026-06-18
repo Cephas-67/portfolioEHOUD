@@ -77,6 +77,72 @@ Journal ouvert : {START_DATE}
 
 ---
 
+## 2026-06-18 · Mobile-first : menu mobile (trou) + base grain premium
+
+**Contexte** : Objectif portfolio premium « Awwwards ». Etape 1 demandee : mobile-first, en commencant par un menu mobile au style de simeonamoussou.com.
+
+**Ce qui a été fait** :
+- Constat : aucun menu mobile (`Header` nav en `hidden lg:flex`, pas de hamburger) -> liens inaccessibles sur mobile. Cree `MobileMenu.tsx` : overlay plein ecran navy + grain, grands liens cursive en stagger, close, langue + CTA Contact, scroll bloque.
+- `Header` : hamburger `lg:hidden`, actions desktop `hidden lg:flex`. `.grain-overlay` (bruit SVG feTurbulence, mix-blend overlay) ajoute a `index.css` comme base reutilisable.
+
+**Limite** : simeonamoussou.com est une SPA React -> WebFetch ne renvoie que le titre, impossible de scraper le menu/grain exacts. Menu construit selon l'identite Ehoud ; capture d'ecran requise pour un match exact.
+
+**Reste (roadmap premium)** : horloge verticale sur mobile ; audit mobile-first page par page (Home/About/Offre/Portfolio) ; grain applique au bg global ; passe espacements + polish award. `premium-frontend-ui` (skill) chargee comme reference.
+
+**Fichiers** : `src/components/layout/MobileMenu.tsx` (nouveau), `src/components/layout/Header.tsx`, `src/index.css`.
+
+---
+
+## 2026-06-18 · Transition Contact + section Perspective (About)
+
+**Ce qui a été fait** :
+- Transition vers /contact qui « grattait » : cause = `ehoud-bomber.jpg` (6,7 Mo) + init du canvas InkReveal plein ecran, tous deux sur le main-thread pile pendant la montee de page. Fix : image convertie en webp via sharp (`ehoud-bomber-hero.webp`, 466 Ko, x14 plus leger) + montage de `<InkReveal>` differe a 1,2s (apres la transition) via un flag `inkReady` ; `decoding="async"` sur le hero.
+- About / section Perspective : manifeste passe de `font-display uppercase` (Bristone, lourd) a casse normale + poids normal (reduire le gras global). Voile de fond `bg-navy/40` -> `bg-navy/20` (voir l'image proprement), lisibilite assuree par un `text-shadow` sur le bloc epingle. Titre `perspectiveEyebrow` renomme « Notre/Our perspective » -> « Ma/My perspective ».
+
+**Leçon retenue** : un « grattage » d'entree de page = travail synchrone main-thread (gros decode image, init canvas) qui tombe pendant l'anim de transform. La transition elle-meme (transform GPU) n'est pas en cause : differer/alleger ce qui se monte avec la page. Toujours convertir en webp les assets > 1 Mo (sharp est dispo dans le repo).
+
+**Reste** : manifeste Perspective garde « on/notre » / « we/our » alors que le titre est passe au « je/my » — coherence a confirmer avec l'utilisateur. `ehoud-bomber.jpg` (6,7 Mo) n'est plus reference (source du webp, conserve).
+
+**Fichiers modifiés** : `src/pages/Contact.tsx`, `src/pages/About.tsx`, `src/i18n/translations.ts`, + `src/assets/ehoud-bomber-hero.webp` (nouveau).
+
+---
+
+## 2026-06-18 · Offre : cartes accordees aux affiches + fluidite de l'empilement
+
+**Contexte** : Couleur de chaque carte service mal assortie ; lag croissant quand les cartes `sticky` s'empilent. Objectif : couleur tiree de l'affiche voisine + scroll fluide facon Lenis.
+
+**Ce qui a été fait** :
+- Lecture directe des 6 affiches (`src/assets/offers/*.webp`) via le tool Read (affichage image) pour extraire une couleur dominante chacune. 6 tokens HSL crees dans `index.css` (`--svc-identity` poudre, `--svc-campaign` acier, `--svc-social` orange, `--svc-print` magenta, `--svc-event` azur, `--svc-art` vert). `services.ts` mappe bg+text par carte (contraste navy/white adapte).
+- Perf : suppression du `useScroll`/`useTransform` parallax PAR affiche (6 abonnements scroll + 6 images upscalees x1.2 recalculees chaque frame = cause n°1 du jank cumulatif). Hover-rotate CSS conserve.
+- GPU : `transform-gpu will-change-transform [backface-visibility:hidden]` sur la div qui scale ; `will-change-transform` sur les croix. Croix passees en `currentColor` (visibles sur fond clair ET fonce).
+
+**Leçon retenue** : sur un empilement de N cartes `sticky`, le cout qui « grandit avec la pile » vient des animations scroll-liees actives sur TOUTES les cartes a la fois (skill gsap-performance §7 : reduire le travail simultane). Retirer les `useScroll` par-carte > micro-optim. Les rotations CSS (`animate-spin`) restent sur le compositor, peu couteuses ; le vrai poids etait le parallax JS main-thread.
+
+**Limite** : pas d'Adobe MCP utilise (Read affiche deja l'image, suffisant pour juger la couleur) ; couleurs choisies a l'oeil, pas par echantillonnage pixel exact.
+
+**Fichiers modifiés** : `src/pages/Services.tsx`, `src/data/services.ts`, `src/index.css`.
+
+---
+
+## 2026-06-18 · Contact : formulaire repris a l'identique de HoH/dear-honey
+
+**Contexte** : Abandonner le formulaire « switch » (panneau coulissant work/feedback, notre invention) et reproduire la structure + les effets du formulaire houseofhoney.com/dear-honey.
+
+**Ce qui a été fait** :
+- `ContactForm.tsx` reecrit en editorial une colonne : portrait rond + titre cursive + sous-titre centres, puis Nom/Email/Message en champs « soulignement », bouton Send a remplissage. Mode unique (plus de toggle).
+- Effet HoH cle : champ underline anime au focus via `peer` + `<span>` `scale-x-0 -> peer-focus:scale-x-100` (trait bleu logo qui se deploie). Reveals au scroll echelonnes (delays 0.1->0.3).
+- Section passee de `theme="marine"` (navy) a `theme="pale"` (fond clair) pour le rendu editorial clair de HoH. Palette tokens : navy/blanc/`--logo` (#0553EC).
+
+**Limite rencontree** : WebFetch ne restitue que le markdown (pas le CSS/JS externe Squarespace), donc extraction au pixel impossible. Reproduction fidele de la STRUCTURE + langage visuel, pas un clone pixel-perfect des micro-animations proprietaires.
+
+**Leçon retenue** : pour cloner un site JS/Squarespace, le scrap markdown donne la structure et les textes, jamais les effets ; reconstruire les effets avec les composants maison (Reveal, FillButton) + un focus underline `peer`. Demander une capture si parite pixel exigee.
+
+**Reste** : clés i18n `panelTo*` desormais inutilisees (inoffensives) a nettoyer ; portrait rond reutilise `ehoud-bomber.jpg` (a confirmer vs une photo dediee).
+
+**Fichiers modifiés** : `src/components/ContactForm.tsx`, `src/pages/Contact.tsx`, `tailwind.config.ts` (token `logo`), `src/i18n/translations.ts` (clés panel ajoutees au tour precedent).
+
+---
+
 ## 2026-06-16 · Page Studio (/a-propos) : fond navy + portrait détouré centré
 
 **Ce qui a été fait** :

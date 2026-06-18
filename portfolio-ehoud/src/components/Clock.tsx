@@ -29,6 +29,8 @@ export function Clock({ className }: { className?: string }) {
     minute: "2-digit",
     hour12: false,
   }).format(now);
+  // Heures et minutes séparées pour l'affichage vertical sur mobile (empilé).
+  const [hh, mm] = time.match(/\d{2}/g) ?? [time, ""];
 
   const rawDate = new Intl.DateTimeFormat(locale, {
     weekday: "short",
@@ -39,13 +41,17 @@ export function Clock({ className }: { className?: string }) {
 
   return (
     <div className={cn("font-ios flex flex-col items-center text-white", className)}>
+      {/* Mobile : heures sur minutes (vertical, sans deux-points). Desktop (md+) :
+          HH:MM sur une ligne. Geré uniquement en CSS (flex-col -> flex-row). */}
       <time
         dateTime={now.toISOString()}
-        className="clock-glass font-extrabold leading-none text-[clamp(4rem,15vw,11rem)]"
+        className="clock-glass flex flex-col items-center font-extrabold leading-[0.85] text-[clamp(4.5rem,17vw,11rem)] md:flex-row md:leading-none md:text-[clamp(4rem,15vw,11rem)]"
       >
-        {time}
+        <span>{hh}</span>
+        <span className="hidden md:inline">:</span>
+        <span>{mm}</span>
       </time>
-      <span className="mt-2 font-medium text-white/90 [text-shadow:0_1px_20px_rgba(0,0,0,0.45)] text-[clamp(1rem,2.4vw,1.5rem)]">
+      <span className="mt-3 font-medium text-white/90 [text-shadow:0_1px_20px_rgba(0,0,0,0.45)] text-[clamp(1rem,2.4vw,1.5rem)]">
         {date}
       </span>
     </div>

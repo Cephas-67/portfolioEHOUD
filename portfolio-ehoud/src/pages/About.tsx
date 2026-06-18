@@ -60,12 +60,13 @@ function Perspective() {
           <img src={perspectiveImg} alt="" aria-hidden="true" className="size-full object-cover" />
         </motion.div>
       </div>
-      {/* Voile navy léger : l'image est déjà sombre (assombrie en amont), comme HoH. */}
-      <div className="pointer-events-none absolute inset-0 -z-1 bg-navy/40" />
+      {/* Voile navy très léger : on veut voir l'image proprement. La lisibilité du
+          texte est assurée par un text-shadow sur le bloc épinglé, pas par le voile. */}
+      <div className="pointer-events-none absolute inset-0 -z-1 bg-navy/20" />
 
       {/* Bloc texte épinglé : se cale à 96px du haut (sous le nav) et y reste figé
           tant que la section défile ; il se relâche quand le bas de la section arrive. */}
-      <div className="sticky top-24 text-white">
+      <div className="sticky top-24 text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.55)]">
         {/* Filet horizontal animé (scaleX depuis la gauche). */}
         <motion.div
           className="mb-8 h-px origin-left bg-white/40"
@@ -79,11 +80,11 @@ function Perspective() {
           </p>
         </div>
 
-        {/* Manifeste calé à droite (col-start-8), display en capitales. Police et
-            interligne resserrés + colonne un peu plus large : le bloc doit TENIR
+        {/* Manifeste calé à droite (col-start-8). Casse normale et poids normal
+            (moins de gras sur le site), interligne un peu aéré. Le bloc doit TENIR
             dans la hauteur d'écran, sinon le `sticky` ne peut pas rester figé. */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-          <div className="flex flex-col gap-[0.4em] font-display uppercase leading-[1.15] text-[clamp(1.125rem,1.8vw,1.6rem)] lg:col-span-5 lg:col-start-8">
+          <div className="flex flex-col gap-[0.5em] font-normal leading-[1.4] text-[clamp(1.125rem,1.8vw,1.6rem)] lg:col-span-5 lg:col-start-8">
             {lines.map((line, i) => (
               <motion.p
                 key={line}
@@ -242,12 +243,12 @@ export default function About() {
   ];
 
   return (
-    <div className="theme-marine bg-theme-bg-primary text-theme-text-primary">
+    <div className="theme-marine bg-grain text-theme-text-primary">
       <PageHero image={heroImg} eyebrow={a.heroEyebrow} title={a.heroTitle} />
 
       {/* A — L'auteur : infos à gauche, portrait détouré à droite, posé sur le navy
           (cœur de la page studio HoH). Fond navy, même bleu que Home/Space. */}
-      <section className="bg-theme-bg-primary px-4 py-24 text-theme-text-primary lg:px-6 lg:py-32">
+      <section className="bg-grain px-4 py-24 text-theme-text-primary lg:px-6 lg:py-32">
         <div className="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal className="flex flex-col gap-6">
             <p className={EYEBROW}>{a.studioEyebrow}</p>
@@ -283,7 +284,7 @@ export default function About() {
 
       {/* B2 — Après la perspective : photo au travail à gauche, texte à droite
           (deuxième photo du studio, schéma image+texte comme la page studio HoH). */}
-      <section className="bg-theme-bg-primary px-4 py-24 text-theme-text-primary lg:px-6 lg:py-32">
+      <section className="bg-grain px-4 py-24 text-theme-text-primary lg:px-6 lg:py-32">
         <div className="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <ParallaxImage
             src={ehoudLaptop}
@@ -299,7 +300,7 @@ export default function About() {
       </section>
 
       {/* C — « Ce que je fais » : rangée d'images titrées (titre script centré par visuel). */}
-      <section className="bg-theme-bg-primary px-4 pb-24 text-theme-text-primary lg:px-6 lg:pb-32">
+      <section className="bg-grain px-4 pb-24 text-theme-text-primary lg:px-6 lg:pb-32">
         <div className="mx-auto max-w-[1400px]">
           <Reveal>
             <p className={`mb-12 text-center ${EYEBROW}`}>{a.doEyebrow}</p>
@@ -316,7 +317,7 @@ export default function About() {
       </section>
 
       {/* D — Clôture : déclaration centrée (script) + grand marquee accent (fond navy). */}
-      <section className="overflow-hidden bg-theme-bg-primary px-4 pt-24 text-theme-text-primary lg:px-6 lg:pt-32">
+      <section className="overflow-hidden bg-grain px-4 pt-24 text-theme-text-primary lg:px-6 lg:pt-32">
         <Reveal className="mx-auto max-w-[1054px]">
           <p className={`text-center ${EYEBROW}`}>{a.closingEyebrow}</p>
           <p className={`mx-auto mt-6 text-center ${TITLE_MED}`}>{a.closingStatement}</p>

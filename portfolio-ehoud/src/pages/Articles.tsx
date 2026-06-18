@@ -76,7 +76,7 @@ export default function Articles() {
   const [featured, ...rest] = articles;
 
   return (
-    <div className="theme-marine bg-theme-bg-primary text-theme-text-primary">
+    <div className="theme-marine bg-grain text-theme-text-primary">
       <PageHero image={heroImg} eyebrow={j.heroEyebrow} title={j.heroTitle} />
 
       <Section theme="marine">
