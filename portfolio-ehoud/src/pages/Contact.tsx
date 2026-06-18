@@ -3,14 +3,9 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/i18n/LanguageContext";
 import InkReveal from "@/components/InkReveal";
 import { ContactForm } from "@/components/ContactForm";
-import { useDeviceCapabilities } from "@/hooks/useDeviceCapabilities";
 
 export default function Contact() {
   const { t } = useLanguage();
-  // InkReveal n'a pas de gestion tactile : sur mobile il masquerait le dégradé
-  // sans jamais le révéler. On laisse alors le dégradé bleu s'afficher seul.
-  const { isTouch, isLowEnd } = useDeviceCapabilities();
-  const showInk = !isTouch && !isLowEnd;
 
   return (
     <div className="theme-marine bg-grain text-theme-text-primary">
@@ -22,8 +17,9 @@ export default function Contact() {
         {/* Fond revele : degrade 100 % bleu de la charte. */}
         <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sky))] via-[hsl(var(--blue))] to-[hsl(var(--logo))]" />
 
-        {/* Calque navy + revelation a l'encre au passage du curseur (desktop seul). */}
-        {showInk && <InkReveal maskColor={[23, 56, 97]} brushSize={150} />}
+        {/* Calque navy + revelation a l'encre : au curseur (desktop) ou au doigt
+            (mobile, support tactile dans InkReveal). */}
+        <InkReveal maskColor={[23, 56, 97]} brushSize={150} />
 
         {/* Deux petits carres accent (rappel de la marque). */}
         <span className="pointer-events-none absolute left-1/2 top-16 z-[2] h-2 w-2 -translate-x-1/2 bg-logo" />

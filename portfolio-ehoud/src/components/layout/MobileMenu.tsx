@@ -71,7 +71,11 @@ export function MobileMenu({
             }}
             transition={{ duration: 0.55, ease: EASE }}
             style={{ willChange: "clip-path" }}
-            className="bg-grain relative flex h-full w-full flex-col overflow-hidden rounded-[28px] p-5 text-white shadow-2xl"
+            // Fond NAVY plein (pas `bg-grain`) : animer un clip-path circle() sur un
+            // fond de bruit SVG re-rasterise le filtre à chaque frame → le déroulé
+            // du menu grattait. En navy plein, le cercle se déroule sur une couche
+            // GPU simple = fluide.
+            className="relative flex h-full w-full flex-col overflow-hidden rounded-[28px] bg-navy p-5 text-white shadow-2xl"
           >
 
             {/* Contenu : fade-in apres le deroule du tapis. */}

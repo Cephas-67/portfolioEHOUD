@@ -203,6 +203,14 @@ export default function InkReveal({
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };
 
+  // Position d'un toucher (mobile). On ne bloque pas le scroll : le doigt révèle
+  // l'encre tout en faisant défiler la page normalement.
+  const getTouchPos = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    const touch = e.touches[0];
+    const rect = e.currentTarget.getBoundingClientRect();
+    return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+  };
+
   return (
     <canvas
       ref={canvasRef}
@@ -226,6 +234,20 @@ export default function InkReveal({
         startLoop();
       }}
       onMouseLeave={() => {
+        lastPosRef.current = null;
+      }}
+      onTouchStart={(e) => {
+        const pos = getTouchPos(e);
+        lastPosRef.current = pos;
+        stampAlong(pos.x, pos.y);
+        startLoop();
+      }}
+      onTouchMove={(e) => {
+        const pos = getTouchPos(e);
+        stampAlong(pos.x, pos.y);
+        startLoop();
+      }}
+      onTouchEnd={() => {
         lastPosRef.current = null;
       }}
     />

@@ -2,7 +2,6 @@ import { useRef } from "react";
 import Marquee from "react-fast-marquee";
 import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { useDeviceCapabilities } from "@/hooks/useDeviceCapabilities";
 import { PageHero } from "@/components/PageHero";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { Reveal } from "@/components/Reveal";
@@ -153,11 +152,9 @@ function ScrollShowcase() {
   const { t } = useLanguage();
   const a = t.about;
   const reduce = useReducedMotion();
-  const { isMobile, isLowEnd } = useDeviceCapabilities();
-  // Sur mobile / device modeste : la séquence 760vh (scale 16x + rideau + parallax)
-  // est trop lourde et le scroll-jacking gêne le scroll tactile. On sert la version
-  // statique (photo + phrase), garantie fluide.
-  const lightMode = reduce || isMobile || isLowEnd;
+  // Séquence zoom servie partout (mobile inclus). On ne bascule sur la version
+  // statique que si l'utilisateur demande explicitement moins d'animation.
+  const lightMode = reduce;
   const ref = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({

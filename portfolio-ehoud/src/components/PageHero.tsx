@@ -15,8 +15,9 @@ type PageHeroProps = {
 };
 
 export function PageHero({ image, eyebrow, title }: PageHeroProps) {
-  const { isMobile, prefersReducedMotion } = useDeviceCapabilities();
-  const staticImage = isMobile || prefersReducedMotion;
+  // Parallax actif partout (mobile inclus) ; coupé uniquement en reduced-motion.
+  const { prefersReducedMotion } = useDeviceCapabilities();
+  const staticImage = prefersReducedMotion;
   const ref = useRef<HTMLDivElement>(null);
   // Tant que l'image de fond n'est pas chargée, on garde le texte caché : sinon, à la
   // première visite d'une page, on verrait le gros marquee blanc sur le fond navy nu

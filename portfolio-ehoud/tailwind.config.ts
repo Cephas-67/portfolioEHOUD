@@ -37,8 +37,9 @@ export default {
         // 3 rôles : Work Sans (corps) · Bristone Display (navbar/footer/labels) · Pinyon Script (grands titres)
         sans: ['"Work Sans"', "ui-sans-serif", "system-ui", "sans-serif"],
         display: ['"Bristone Display LBC"', '"Work Sans"', "sans-serif"],
-        // Grands titres calligraphiés. L'horloge garde Mokgech via la classe .font-ios.
-        script: ['"Pinyon Script LBC"', "cursive"],
+        // Grands titres : police signature Realistic Nature (ex-Pinyon Script).
+        // L'horloge utilise la même via la classe .font-ios.
+        script: ['"Realistic Nature LBC"', '"Pinyon Script LBC"', "cursive"],
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -53,7 +53,13 @@ export function Layout() {
             className={
               settled
                 ? "relative z-0"
-                : "fixed inset-0 z-20 overflow-hidden bg-grain"
+                // Calque qui glisse par-dessus l'ancienne page : fond NAVY plein
+                // (pas `bg-grain`). Le bruit SVG feTurbulence forçait une
+                // re-rasterisation du filtre à chaque frame du translate/scale =
+                // la « montée » qui gratte. En navy plein, le calque est une simple
+                // couche GPU translatée → glissé fluide. Le grain reste visible sur
+                // la page posée dessous (chaque page a son propre `bg-grain`).
+                : "fixed inset-0 z-20 overflow-hidden bg-navy"
             }
             initial={settled ? false : { y: "100%" }}
             animate={{ y: 0 }}

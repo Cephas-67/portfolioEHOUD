@@ -16,6 +16,15 @@
   font-weight: 400;
   font-display: swap;
 }
+/* Realistic Nature : police signature ajoutée par Siméon. Sert aux grands titres
+   (rôle « script ») et aux chiffres de l'horloge. Suffixe LBC = même logique que
+   les autres familles, on évite qu'une version installée localement masque le web. */
+@font-face {
+  font-family: "Realistic Nature LBC";
+  src: url("./assets/fonts/realistic-nature.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
 @font-face {
   font-family: "Bristone Display LBC";
   src: url("./assets/fonts/bristone-display.woff2") format("woff2");
@@ -121,11 +130,11 @@
   font-display: swap;
 }
 
-/* Horloge style One UI (Samsung) : police arrondie + chiffres tabulaires
-   (la largeur ne saute pas à chaque minute).
-   POUR COMPARER : remplacer "Mokgech" par "Baloo 2", "Varela Round" ou "Fredoka". */
+/* Horloge : police signature Realistic Nature. On garde "tnum" si la police
+   l'expose (sinon ignoré) pour limiter le saut de largeur des chiffres.
+   POUR COMPARER : remplacer "Realistic Nature LBC" par "Mokgech", "Baloo 2"... */
 .font-ios {
-  font-family: "Mokgech", "Work Sans", sans-serif;
+  font-family: "Realistic Nature LBC", "Mokgech", "Work Sans", sans-serif;
   font-feature-settings: "tnum";
   letter-spacing: -0.01em;
 }

@@ -14,10 +14,10 @@ type ParallaxImageProps = {
 // descendant) + léger zoom au survol. Reprend le mécanisme du modèle :
 // couche interne 19% plus haute, décalée vers le haut, translateY piloté au scroll.
 export function ParallaxImage({ src, alt, ratio = 0.8, className }: ParallaxImageProps) {
-  // Sur mobile / reduced-motion : image figée (le parallax scroll-lié est un
-  // déclencheur de jank tactile pour un gain visuel mineur).
-  const { isMobile, prefersReducedMotion } = useDeviceCapabilities();
-  const staticImage = isMobile || prefersReducedMotion;
+  // Parallax actif partout (mobile inclus) ; on ne le coupe que si l'utilisateur
+  // demande explicitement moins d'animation (accessibilité).
+  const { prefersReducedMotion } = useDeviceCapabilities();
+  const staticImage = prefersReducedMotion;
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,

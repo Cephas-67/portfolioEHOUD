@@ -56,7 +56,7 @@ export function HeroShowcase() {
     <div>
       <div
         ref={frameRef}
-        className="relative h-[78vh] min-h-[480px] w-full overflow-hidden bg-theme-bg-primary"
+        className="relative h-[56vh] min-h-[340px] w-full overflow-hidden bg-theme-bg-primary md:h-[78vh] md:min-h-[480px]"
       >
         {slides.map((slide, i) => {
           const isActive = i === index;
