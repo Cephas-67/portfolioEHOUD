@@ -12,7 +12,7 @@
 
 @font-face {
   font-family: "Pinyon Script LBC";
-  src: url("./assets/fonts/pinyon-script.woff2") format("woff2");
+  src: url("/fonts/pinyon-script.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
 }
@@ -21,19 +21,19 @@
    les autres familles, on évite qu'une version installée localement masque le web. */
 @font-face {
   font-family: "Realistic Nature LBC";
-  src: url("./assets/fonts/realistic-nature.woff2") format("woff2");
+  src: url("/fonts/realistic-nature.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
   font-family: "Bristone Display LBC";
-  src: url("./assets/fonts/bristone-display.woff2") format("woff2");
+  src: url("/fonts/bristone-display.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
 }
 @font-face {
   font-family: "Bristone Hollow LBC";
-  src: url("./assets/fonts/bristone-display-hollow.woff2") format("woff2");
+  src: url("/fonts/bristone-display-hollow.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
 }
@@ -41,25 +41,25 @@
 /* Work Sans, corps de texte (400 → 700) */
 @font-face {
   font-family: "Work Sans";
-  src: url("./assets/fonts/worksans-400.woff2") format("woff2");
+  src: url("/fonts/worksans-400.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
   font-family: "Work Sans";
-  src: url("./assets/fonts/worksans-500.woff2") format("woff2");
+  src: url("/fonts/worksans-500.woff2") format("woff2");
   font-weight: 500;
   font-display: swap;
 }
 @font-face {
   font-family: "Work Sans";
-  src: url("./assets/fonts/worksans-600.woff2") format("woff2");
+  src: url("/fonts/worksans-600.woff2") format("woff2");
   font-weight: 600;
   font-display: swap;
 }
 @font-face {
   font-family: "Work Sans";
-  src: url("./assets/fonts/worksans-700.woff2") format("woff2");
+  src: url("/fonts/worksans-700.woff2") format("woff2");
   font-weight: 700;
   font-display: swap;
 }
@@ -70,6 +70,50 @@
 .portrait-fade {
   -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+}
+/* Variante pour le portrait costume (About / Section A) : la photo est coupée
+   plus haut (mi-cuisses), donc on étend la zone de fondu sur les ~22% du bas
+   pour que la coupure se confonde proprement avec le navy en dessous. */
+.portrait-fade-suit {
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
+
+/* Fond "blanc cassé" doux : moins agressif que pur blanc, garde un papier
+   chaleureux qui contraste élégamment avec le navy. Utilisé pour le panneau
+   révélé du zoom et pour Section B (la déclaration). */
+.bg-soft-white {
+  background-color: hsl(38 30% 95%);
+}
+
+/* Bleu plus profond utilisé sur la section zoom : volontairement plus sombre
+   que le navy de Section A. Permet que la marche en haut de la section zoom
+   (clip-path) soit visiblement distincte de la section au-dessus → le contour
+   d'escalier devient perceptible (Section A claire au-dessus, zoom foncé en bas). */
+.bg-zoom-deep {
+  background-color: hsl(214 78% 14%);
+}
+
+/* Section "zoom" About : le HAUT a la forme du trait (M0 0 → 993.5 0 → 1173.5 126.5
+   → 1745.5 126.5). On clip la section en polygone qui reproduit cette forme à
+   l'identique → le sommet de la section EST la forme de la barre. La hauteur de la
+   marche suit celle du trait : 60 px mobile, 90 px ≥ md. Les % horizontaux sont
+   pris directement du SVG (993.5/1745.5 ≈ 56.93 %, 1173.5/1745.5 ≈ 67.23 %). */
+.zoom-clip {
+  --step-h: 60px;
+  clip-path: polygon(
+    0 0,
+    56.93% 0,
+    67.23% var(--step-h),
+    100% var(--step-h),
+    100% 100%,
+    0 100%
+  );
+}
+@media (min-width: 768px) {
+  .zoom-clip {
+    --step-h: 90px;
+  }
 }
 
 /* Nom EHOUD du hero, Bristone Hollow appliquée en dur (indépendant de Tailwind). */
@@ -87,37 +131,37 @@
    Baloo 2 et Varela Round prêtes : il suffit de changer .font-ios pour comparer. */
 @font-face {
   font-family: "Fredoka";
-  src: url("./assets/fonts/fredoka-500.woff2") format("woff2");
+  src: url("/fonts/fredoka-500.woff2") format("woff2");
   font-weight: 500;
   font-display: swap;
 }
 @font-face {
   font-family: "Fredoka";
-  src: url("./assets/fonts/fredoka-700.woff2") format("woff2");
+  src: url("/fonts/fredoka-700.woff2") format("woff2");
   font-weight: 700;
   font-display: swap;
 }
 @font-face {
   font-family: "Baloo 2";
-  src: url("./assets/fonts/baloo2-500.woff2") format("woff2");
+  src: url("/fonts/baloo2-500.woff2") format("woff2");
   font-weight: 500;
   font-display: swap;
 }
 @font-face {
   font-family: "Baloo 2";
-  src: url("./assets/fonts/baloo2-700.woff2") format("woff2");
+  src: url("/fonts/baloo2-700.woff2") format("woff2");
   font-weight: 700;
   font-display: swap;
 }
 @font-face {
   font-family: "Baloo 2";
-  src: url("./assets/fonts/baloo2-800.woff2") format("woff2");
+  src: url("/fonts/baloo2-800.woff2") format("woff2");
   font-weight: 800;
   font-display: swap;
 }
 @font-face {
   font-family: "Varela Round";
-  src: url("./assets/fonts/varelaround-400.woff2") format("woff2");
+  src: url("/fonts/varelaround-400.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
 }
@@ -125,7 +169,7 @@
    graisse, mappée sur toute la plage 100-900 pour éviter le faux-gras synthétique. */
 @font-face {
   font-family: "Mokgech";
-  src: url("./assets/fonts/mokgech-regular.woff2") format("woff2");
+  src: url("/fonts/mokgech-regular.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
 }

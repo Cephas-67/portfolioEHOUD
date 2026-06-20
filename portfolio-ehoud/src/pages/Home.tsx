@@ -96,7 +96,7 @@ export default function Home() {
         {/* Portrait détouré, au-dessus du nom. Il arrive de la droite à vitesse
             fluide, avec des lignes de vitesse derrière, puis se pose. */}
         <div className="relative z-10 mx-auto flex w-full max-w-[1400px] justify-end px-4 lg:px-6">
-          <div className="relative w-[min(80%,460px)] translate-x-3 md:translate-x-0 md:mr-[18px]">
+          <div className="relative w-[min(80%,460px)] translate-x-3 translate-y-4 md:translate-x-0 md:translate-y-6 md:mr-[18px]">
             {/* Lignes de vitesse (« effet sonic ») derrière le portrait. */}
             {!reduce &&
               SPEED_LINES.map((line, i) => (

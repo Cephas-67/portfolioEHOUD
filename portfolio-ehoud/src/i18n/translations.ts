@@ -91,6 +91,9 @@ export type Translation = {
     perspectiveP3: string;
     perspectiveP4: string;
     atelierTitle: string;
+    parcoursTitle: string;
+    parcoursIntro: string;
+    parcoursItems: Array<{ role: string; org: string; description: string }>;
     showcaseZoomA: string;
     showcaseZoomB: string;
     showcasePinned: string;
@@ -220,13 +223,13 @@ export const translations: Record<Lang, Translation> = {
       sendAnother: "Envoyer un autre message",
     },
     about: {
-      heroEyebrow: "Designer graphique · Social Media Manager",
+      heroEyebrow: "Stratège & Designer",
       heroTitle: "About Me",
       statementTitle: "Je transforme des marques en histoires que l'on retient.",
       statementP1:
-        "Depuis sept ans, j'accompagne des marques, des événements et des entrepreneurs à Cotonou et au-delà. Logos, identités, affiches, campagnes : chaque projet part d'une intention claire et d'un même fil bleu.",
+        "Depuis plus de sept ans, j'évolue dans le graphisme, la communication visuelle et le marketing digital, avec une conviction forte : une bonne image ne sert pas seulement à embellir une marque, elle doit raconter une histoire, créer de la confiance et produire un impact.",
       statementP2:
-        "Mon approche mêle rigueur graphique et sens du récit. Je ne dessine pas seulement ce qui est beau : je construis ce qui se reconnaît et se retient.",
+        "Titulaire d'une licence en Administration générale et territoriale, je construis un profil à la croisée de la réflexion stratégique, de la gestion de projets et de la création digitale, et m'apprête à intégrer un cycle de Master pour consolider ce que je développe sur le terrain.",
       studioEyebrow: "Le studio",
       studioTitle: "Le Bleu Créatif",
       studioText:
@@ -238,6 +241,35 @@ export const translations: Record<Lang, Translation> = {
       perspectiveP3: "Le détail n'est pas un luxe : c'est ce qui fait tenir l'ensemble.",
       perspectiveP4: "Le bleu est notre fil : clair, franc, reconnaissable entre tous.",
       atelierTitle: "L'atelier, au quotidien",
+      parcoursTitle: "Parcours",
+      parcoursIntro:
+        "Stratégie, création et entrepreneuriat — un profil hybride forgé sur le terrain depuis plus de sept ans.",
+      parcoursItems: [
+        {
+          role: "Responsable communication",
+          org: "COJAS Bénin",
+          description:
+            "Deux ans à piloter la communication d'enjeux sociaux et communautaires sensibles : une parole accessible, responsable et orientée impact.",
+        },
+        {
+          role: "Co-fondateur",
+          org: "Decade Games Solutions",
+          description:
+            "Entreprise en plein développement qui propose des concepts pour se déconnecter des écrans et renouer avec la réalité, le rire et les échanges authentiques.",
+        },
+        {
+          role: "Initiateur",
+          org: "Digital Meet Tour",
+          description:
+            "Programme qui rapproche les jeunes des compétences numériques essentielles. Déployé au nord du Bénin, en préparation d'une phase sous-régionale.",
+        },
+        {
+          role: "CMO & Co-fondateur",
+          org: "Clario",
+          description:
+            "Entreprise spécialisée dans la démystification de l'IA et des concepts liés au digital, pour les rendre lisibles et actionnables.",
+        },
+      ],
       showcaseZoomA: "On ne décore pas.",
       showcaseZoomB: "On fait parler.",
       showcasePinned: "Conçu pour être vu, pensé pour rester.",
@@ -364,13 +396,13 @@ export const translations: Record<Lang, Translation> = {
       sendAnother: "Send another message",
     },
     about: {
-      heroEyebrow: "Graphic Designer · Social Media Manager",
+      heroEyebrow: "Strategist & Designer",
       heroTitle: "About Me",
       statementTitle: "I turn brands into stories people remember.",
       statementP1:
-        "For seven years I've worked with brands, events and entrepreneurs in Cotonou and beyond. Logos, identities, posters, campaigns: every project starts from a clear intention and a single blue thread.",
+        "For over seven years, I've worked in graphic design, visual communication and digital marketing — with one strong conviction: a good image doesn't just decorate a brand, it must tell a story, build trust and create impact.",
       statementP2:
-        "My approach blends graphic rigor with a sense of narrative. I don't just draw what looks good: I build what gets recognised and remembered.",
+        "I hold a bachelor's in General and Territorial Administration, and I sit at the crossroads of strategic thinking, project management and digital creation. I'm now preparing to start a Master's to consolidate what I've been building on the ground.",
       studioEyebrow: "The studio",
       studioTitle: "The Creative Blue",
       studioText:
@@ -382,6 +414,35 @@ export const translations: Record<Lang, Translation> = {
       perspectiveP3: "Detail isn't a luxury: it's what holds the whole thing together.",
       perspectiveP4: "Blue is our thread: clear, honest, recognisable anywhere.",
       atelierTitle: "The studio, day to day",
+      parcoursTitle: "Career",
+      parcoursIntro:
+        "Strategy, design and entrepreneurship — a hybrid profile, built on the ground for over seven years.",
+      parcoursItems: [
+        {
+          role: "Communication lead",
+          org: "COJAS Bénin",
+          description:
+            "Two years leading the communication of sensitive social and community issues — an accessible, responsible, impact-driven voice.",
+        },
+        {
+          role: "Co-founder",
+          org: "Decade Games Solutions",
+          description:
+            "A growing company that offers concepts to step away from screens and reconnect with the real world: laughter, presence, authentic exchange.",
+        },
+        {
+          role: "Initiator",
+          org: "Digital Meet Tour",
+          description:
+            "A programme bringing essential digital skills to young people. Deployed in northern Benin, preparing a sub-regional second phase.",
+        },
+        {
+          role: "CMO & Co-founder",
+          org: "Clario",
+          description:
+            "A company dedicated to demystifying AI and digital concepts so that they become readable and actionable.",
+        },
+      ],
       showcaseZoomA: "We don't decorate.",
       showcaseZoomB: "We make it speak.",
       showcasePinned: "Made to be seen, built to last.",
