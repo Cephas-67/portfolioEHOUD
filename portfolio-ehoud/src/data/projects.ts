@@ -127,12 +127,12 @@ export const institutionnel: Project[] = [
 ];
 
 export const valentin: Project[] = [
-  { src: val05, title: "Cœurs Libres · J-5", category: "Campagne", ratio: VAL },
-  { src: val04, title: "Cœurs Libres · J-4", category: "Campagne", ratio: VAL },
-  { src: val03, title: "Cœurs Libres · J-3", category: "Campagne", ratio: VAL },
-  { src: val02, title: "Cœurs Libres · J-2", category: "Campagne", ratio: VAL },
-  { src: val01, title: "Cœurs Libres · J-1", category: "Campagne", ratio: VAL },
-  { src: valTeaser, title: "Cœurs Libres · Teaser", category: "Campagne", ratio: VAL },
+  { src: val05, title: "Cœurs Libres · Teaser", category: "Campagne", ratio: VAL },
+  { src: val04, title: "Cœurs Libres · J-5", category: "Campagne", ratio: VAL },
+  { src: val03, title: "Cœurs Libres · J-4", category: "Campagne", ratio: VAL },
+  { src: val02, title: "Cœurs Libres · J-3", category: "Campagne", ratio: VAL },
+  { src: val01, title: "Cœurs Libres · J-2", category: "Campagne", ratio: VAL },
+  { src: valTeaser, title: "Cœurs Libres · J-1", category: "Campagne", ratio: VAL },
 ];
 
 export const campagnes: Project[] = [
