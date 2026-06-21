@@ -8,10 +8,19 @@ export function useSmoothScroll() {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) return;
 
-    // Config alignée sur lenis.dev (leur propre site) : mode `lerp` (interpolation
-    // image par image) à 0.1, easing expo par défaut. Plus doux et continu que le
-    // mode `duration`, c'est ce qui donne le glissé caractéristique de Lenis.
-    const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+    // Config inspirée de lenis.dev : mode `lerp` (interpolation image par image).
+    // - lerp 0.08 (au lieu de 0.1) : un peu plus de retard = plus de glissé,
+    //   mieux pour les pages denses comme /portfolio où le scroll natif peut
+    //   donner une sensation hachée à cause des nombreuses images en parallax.
+    // - wheelMultiplier 0.85 : amortit les tics de molette → moins de saccades
+    //   sur les molettes mécaniques (pas de différence sur trackpad).
+    // - syncTouch true : applique le même easing au touch (mobile aussi smooth).
+    const lenis = new Lenis({
+      lerp: 0.08,
+      smoothWheel: true,
+      wheelMultiplier: 0.85,
+      syncTouch: true,
+    });
 
     let rafId = 0;
     const raf = (time: number) => {

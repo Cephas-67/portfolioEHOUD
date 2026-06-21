@@ -11,14 +11,14 @@ import meta from "@/assets/mj-cursor.json";
 // élastique : il s'étire quand la souris fonce, se rétracte quand elle s'arrête.
 // Les points sont dessinés à la position exacte des nœuds → ils émergent du
 // centre de MJ et s'enchaînent jusqu'au curseur, sans décalage.
-const FOLLOW_STRENGTH = 0.085;   // lerp final de MJ vers le bout de la chaîne
-const CHAIN_LENGTH = 14;          // nb de nœuds dans la chaîne (= nb de points)
-const CHAIN_STRENGTH = 0.32;      // lerp d'un nœud vers le précédent
-const SIZE = 44;                  // taille d'affichage de MJ (px)
-const FRAME_MS = 100;             // durée d'une frame de danse
-const DOT_RADIUS = 2.6;           // rayon de base d'un point (px)
+const FOLLOW_STRENGTH = 0.085;     // lerp final de MJ vers le bout de la chaîne
+const CHAIN_LENGTH = 14;           // nb de nœuds dans la chaîne (= nb de points)
+const CHAIN_STRENGTH = 0.32;       // lerp d'un nœud vers le précédent
+const SIZE = 44;                   // taille d'affichage de MJ (px)
+const FRAME_MS = 100;              // durée d'une frame de danse
+const DOT_RADIUS = 2.6;            // rayon de base d'un point (px)
 const DOT_COLOR = "255, 255, 255";
-const HIDE_NEAR_MJ = SIZE * 0.5;  // distance sous laquelle on cache le point pour pas qu'il s'écrase sur MJ
+const HIDE_NEAR_MJ = SIZE * 0.5;   // distance sous laquelle on cache le point pour pas qu'il s'écrase sur MJ
 
 const FRAMES = meta.frames;
 

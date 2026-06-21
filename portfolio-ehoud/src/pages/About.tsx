@@ -350,10 +350,12 @@ function ScrollShowcase() {
         </div>
       </div>
     <section ref={ref} className="zoom-clip bg-zoom-deep relative h-[760vh]">
-      {/* sticky en h-dvh : sur mobile, ça suit la hauteur réellement visible
-          (le chrome navigateur qui se rétracte ne crée plus de bande vide en
-          bas). Sur desktop, dvh = vh, pas de différence. */}
-      <div className="sticky top-0 flex h-dvh items-center justify-center overflow-hidden">
+      {/* sticky en h-lvh : la plus grande hauteur possible du viewport (chrome
+          navigateur caché). Le sticky est TOUJOURS au moins aussi grand que la
+          zone visible → jamais de vide en bas, même pendant les transitions
+          de la barre d'adresse mobile. Le débordement éventuel sous le chrome
+          ne se voit pas. */}
+      <div className="sticky top-0 flex h-[100lvh] items-center justify-center overflow-hidden">
         {/* Plan du fond (révélé quand les panneaux s'ouvrent) : blanc + texte. */}
         <motion.div
           style={{ scale: revealScale }}

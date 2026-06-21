@@ -39,15 +39,31 @@ function SpaceHero() {
   return (
     <section
       ref={ref}
-      className="relative isolate flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 py-40 text-white lg:py-56"
+      className="relative isolate flex min-h-[100lvh] flex-col items-center justify-center overflow-hidden px-6 py-40 text-white lg:py-56"
     >
-      {/* Couche parallax (l'image déborde de PARALLAX px en haut/bas, translateY au scroll) */}
+      {/* Couche parallax (l'image déborde de PARALLAX px en haut/bas, translateY au scroll).
+          Hero = LCP : eager + fetchpriority high pour démarrer la requête au plus tôt,
+          decoding async pour ne pas bloquer le 1er paint, dimensions explicites pour
+          que le navigateur réserve la zone sans CLS. */}
       <div className="absolute inset-0 -z-2 overflow-hidden">
         <motion.div
           className="absolute inset-x-0 -inset-y-20"
-          style={reduce ? undefined : { y }}
+          style={reduce ? undefined : { y, willChange: "transform" }}
         >
-          <img src={spaceHero} alt="" aria-hidden="true" className="size-full object-cover" />
+          <img
+            src={spaceHero}
+            alt=""
+            aria-hidden="true"
+            loading="eager"
+            // fetchpriority est valide HTML mais pas encore dans les types React stricts
+            // → @ts-expect-error tolère l'attribut DOM.
+            // @ts-expect-error fetchpriority non typé
+            fetchpriority="high"
+            decoding="async"
+            width={1920}
+            height={2879}
+            className="size-full object-cover"
+          />
         </motion.div>
       </div>
 
@@ -193,6 +209,7 @@ function Lightbox({ project, onClose }: { project: Project | null; onClose: () =
             <img
               src={project.src}
               alt={project.title}
+              decoding="async"
               className="max-h-[82vh] w-auto max-w-full rounded-xl object-contain shadow-2xl"
             />
             <figcaption className="text-center text-white">
