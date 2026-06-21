@@ -6,6 +6,7 @@ import { LanguageProvider } from "@/i18n/LanguageContext";
 import { IntroLoader } from "@/components/IntroLoader";
 import { IntroContext } from "@/components/IntroContext";
 import { Layout } from "@/components/layout/Layout";
+import { MoonwalkCursor } from "@/components/MoonwalkCursor";
 import { preloadHeroes } from "@/lib/preloadHeroes";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ function App() {
             <Layout />
           </BrowserRouter>
           <Toaster position="bottom-right" />
+          <MoonwalkCursor />
           <IntroLoader onDone={() => setIntroReady(true)} />
         </IntroContext.Provider>
       </LanguageProvider>

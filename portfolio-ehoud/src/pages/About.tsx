@@ -9,7 +9,7 @@ import { Reveal } from "@/components/Reveal";
 
 import heroImg from "@/assets/hero/pexels-steve-29708294.jpg";
 import perspectiveImg from "@/assets/hero/perspective-dark.webp";
-import ehoudSuit from "@/assets/ehoud-suit-centered.png";
+import ehoudSuit from "@/assets/ehoud-suit-centered.webp";
 import ehoudLaptop from "@/assets/ehoud-laptop.webp";
 import ehoudBomber from "@/assets/ehoud-bomber-cut.webp";
 
@@ -249,12 +249,21 @@ function PortraitIntro({ src, alt, className = "" }: { src: string; alt: string;
 
   return (
     <div ref={ref} className="flex items-end justify-center lg:order-last">
-      <motion.img
-        src={src}
-        alt={alt}
-        style={reduce ? undefined : { x, y, opacity }}
-        className={`h-auto w-full max-w-[460px] object-contain drop-shadow-2xl ${className}`}
-      />
+      {/* drop-shadow est posé sur un wrapper STATIQUE : framer-motion anime
+          uniquement le transform (composited GPU), aucune re-rasterisation du
+          filtre à chaque frame de scroll. */}
+      <div className="drop-shadow-2xl">
+        <motion.img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          width={712}
+          height={826}
+          style={reduce ? undefined : { x, y, opacity, willChange: "transform" }}
+          className={`h-auto w-full max-w-[460px] object-contain ${className}`}
+        />
+      </div>
     </div>
   );
 }
@@ -341,7 +350,10 @@ function ScrollShowcase() {
         </div>
       </div>
     <section ref={ref} className="zoom-clip bg-zoom-deep relative h-[760vh]">
-      <div className="sticky top-0 flex h-svh items-center justify-center overflow-hidden">
+      {/* sticky en h-dvh : sur mobile, ça suit la hauteur réellement visible
+          (le chrome navigateur qui se rétracte ne crée plus de bande vide en
+          bas). Sur desktop, dvh = vh, pas de différence. */}
+      <div className="sticky top-0 flex h-dvh items-center justify-center overflow-hidden">
         {/* Plan du fond (révélé quand les panneaux s'ouvrent) : blanc + texte. */}
         <motion.div
           style={{ scale: revealScale }}
@@ -363,15 +375,16 @@ function ScrollShowcase() {
           <RevealColumn key={i} index={i} progress={scrollYProgress} />
         ))}
 
-        {/* Photo d'Ehoud, posée sur les panneaux navy fermés (phase 1). */}
+        {/* Photo d'Ehoud, posée sur les panneaux navy fermés (phase 1).
+            Mobile : la photo remplit l'écran (inset-0 + object-cover, ancrée
+            en bas) → plus de bande de bg-zoom-deep autour ni de coupure en bas
+            de la photo. Desktop (lg) : on revient au portrait posé en bas. */}
         <motion.img
           src={ehoudBomber}
           alt="Ehoud Emmanuel OTI-TOSSOU"
           decoding="async"
           style={{ scale: photoScale, opacity: photoOpacity }}
-          // Couche GPU dédiée : la `drop-shadow` (filter) est rasterisée une seule
-          // fois puis la couche est juste transformée → plus de re-paint par frame.
-          className="absolute bottom-0 z-30 h-[92vh] w-auto object-contain drop-shadow-2xl [backface-visibility:hidden] [will-change:transform]"
+          className="absolute inset-0 z-30 h-full w-full object-cover object-bottom drop-shadow-2xl [backface-visibility:hidden] [will-change:transform] lg:inset-auto lg:bottom-0 lg:left-1/2 lg:h-[92vh] lg:w-auto lg:-translate-x-1/2 lg:object-contain"
         />
 
         {/* Texte qui vient de loin et se rapproche (phase 2). Wrapper plein écran

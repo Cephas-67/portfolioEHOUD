@@ -1,4 +1,4 @@
-import logo from "@/assets/logodef.svg";
+import logo from "@/assets/logodef.webp";
 
 const EMAIL = "otitossouehoud@gmail.com";
 const LINKEDIN =
@@ -14,6 +14,10 @@ export function Footer() {
         src={logo}
         alt=""
         aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        width={1024}
+        height={1024}
         className="pointer-events-none absolute -bottom-44 right-0 w-[360px] translate-x-10 select-none drop-shadow-2xl md:w-[640px] md:translate-x-16"
       />
 

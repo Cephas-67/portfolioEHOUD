@@ -1,0 +1,13 @@
+{
+  "frames": 6,
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "delays": [
+    20,
+    20,
+    20,
+    20,
+    20,
+    20
+  ]
+}
